@@ -15,14 +15,16 @@ public class DrawingView extends JPanel {
     public DrawingView(AppService appService){
 
         this.appService = appService;
-        DrawingController drawingController = new DrawingController(appService, this);
+        appService.setView(this);
+
     }
 
     @Override
     public void paint(Graphics g) {
         Drawing drawing = (Drawing) appService.getModel();
         for(Shape shape : drawing.getShapes()){
-            shape.getRendererService().render(g, shape, false);
+            shape.getRendererService().render(g, shape, true);
+            appService.setView(this);
         }
     }
 }
