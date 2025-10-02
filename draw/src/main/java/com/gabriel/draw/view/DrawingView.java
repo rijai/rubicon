@@ -10,21 +10,16 @@ import javax.swing.*;
 import java.awt.*;
 
 public class DrawingView extends JPanel {
-    AppService appService;
+    Drawing drawing;
 
-    public DrawingView(AppService appService){
-
-        this.appService = appService;
-        appService.setView(this);
-
+    public DrawingView(Drawing drawing){
+        this.drawing  = drawing;
     }
 
     @Override
     public void paint(Graphics g) {
-        Drawing drawing = (Drawing) appService.getModel();
         for(Shape shape : drawing.getShapes()){
-            shape.getRendererService().render(g, shape, true);
-            appService.setView(this);
+            shape.getRendererService().render(g, shape, false);
         }
     }
 }

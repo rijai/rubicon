@@ -2,6 +2,7 @@ package com.gabriel.drawfx.service;
 
 import com.gabriel.drawfx.DrawMode;
 import com.gabriel.drawfx.ShapeMode;
+import com.gabriel.drawfx.model.Drawing;
 import com.gabriel.drawfx.model.Shape;
 
 import javax.swing.*;
@@ -31,7 +32,8 @@ public interface AppService {
 
     void close();
 
-    Object getModel();
+    Drawing getDrawing();
+    void setDrawing(Drawing drawing);
     JPanel getView();
     void setView(JPanel panel);
     void repaint();
