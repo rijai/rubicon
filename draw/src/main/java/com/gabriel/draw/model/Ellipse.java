@@ -9,7 +9,6 @@ import java.awt.*;
 public class Ellipse extends Shape {
        public Ellipse(Point start, Point end){
         super(start);
-        this.setEnd(end);
         this.setColor(Color.RED);
         this.setRendererService(new EllipseRenderer());
     }
