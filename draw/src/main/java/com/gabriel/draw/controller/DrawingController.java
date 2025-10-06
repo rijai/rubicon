@@ -107,7 +107,7 @@ public class DrawingController  implements MouseListener, MouseMotionListener {
                 }
                 else {
                     currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, true);
-                    appService.scale(currentShape, end);
+                    appService.scale(currentShape, start, end);
                     currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, true);
                 }
            }

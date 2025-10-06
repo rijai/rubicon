@@ -80,19 +80,17 @@ public class DrawingAppService implements AppService {
     }
 
     @Override
-    public void move(Shape shape, Point newLoc) {
-        moverService.move(shape, newLoc);}
-
-    @Override
-    public void scale(Shape shape, Point newEnd) {
-        shape.setWidth(newEnd.x - shape.getLocation().x);
-        shape.setHeight(newEnd.y - shape.getLocation().y);
-    }
+    public void move(Shape shape, Point start, Point newLoc) {
+        moverService.move(shape, start, newLoc);}
 
     @Override
     public void scale(Shape shape, Point start, Point end) {
-        shape.setWidth(end.x - shape.getLocation().x);
-        shape.setHeight(end.y - shape.getLocation().y);
+        int dx = end.x - start.x;
+        int dy = end.y - start.y;
+        shape.setWidth(shape.getWidth()+ dx);
+        shape.setHeight(shape.getHeight() + dy);
+        shape.getLocation().x = shape.getLocation().x + dx;
+        shape.getLocation().y = shape.getLocation().y + dy;
     }
 
     @Override
