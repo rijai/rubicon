@@ -1,5 +1,6 @@
 package com.gabriel.drawfx.model;
 
+import com.gabriel.drawfx.SelectionMode;
 import com.gabriel.drawfx.service.RendererService;
 import lombok.Data;
 
@@ -7,6 +8,7 @@ import java.awt.*;
 @Data
 public abstract class Shape {
     boolean selected;
+    SelectionMode selectionMode;
     int r = 5;
     int id;
     private Point location;

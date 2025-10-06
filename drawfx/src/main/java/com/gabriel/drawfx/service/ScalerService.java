@@ -15,5 +15,6 @@ public final class  ScalerService {
         shape.getLocation().x += dx;
         shape.getLocation().y += dy;
         shape.setWidth(shape.getWidth() + dx);
+        shape.setHeight(shape.getHeight());
     }
 }
