@@ -8,6 +8,7 @@ import com.gabriel.drawfx.model.Shape;
 import com.gabriel.drawfx.service.AppService;
 import com.gabriel.drawfx.service.MoverService;
 import com.gabriel.drawfx.service.ScalerService;
+import com.gabriel.drawfx.service.SearchService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,11 +18,13 @@ public class DrawingAppService implements AppService {
     final private Drawing drawing;;
     MoverService moverService;
     ScalerService scalerService;
+    SearchService searchService;
     JPanel drawingView;
     public DrawingAppService(){
         drawing = new Drawing();
         moverService = new MoverService();
         scalerService = new ScalerService();
+        searchService = new SearchService();
         drawing.setDrawMode(DrawMode.Idle);
         drawing.setShapeMode(ShapeMode.Ellipse);
     }
@@ -135,5 +138,11 @@ public class DrawingAppService implements AppService {
     @Override
     public void setSearchRadius(int radius) {
 
+    }
+
+    @Override
+    public void search(Point p) {
+        searchService.search(this,p);
+        repaint();
     }
 }

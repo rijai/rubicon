@@ -40,4 +40,6 @@ public interface AppService {
 
     int getSearchRadius();
     void setSearchRadius(int radius);
+
+    void search(Point p);
 }

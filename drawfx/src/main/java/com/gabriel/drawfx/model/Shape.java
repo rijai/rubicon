@@ -6,6 +6,7 @@ import lombok.Data;
 import java.awt.*;
 @Data
 public abstract class Shape {
+    boolean selected;
     int r = 5;
     int id;
     private Point location;
@@ -20,6 +21,7 @@ public abstract class Shape {
         height = 0;
         this.setColor(Color.RED);
         this.setFill(null);
+        selected = false;
     }
     public Shape(Point location, Point endpoint){
         this.setLocation(location);
