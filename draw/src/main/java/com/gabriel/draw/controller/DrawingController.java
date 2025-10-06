@@ -4,6 +4,7 @@ import com.gabriel.draw.model.Ellipse;
 import com.gabriel.draw.model.Line;
 import com.gabriel.draw.model.Rectangle;
 import com.gabriel.drawfx.DrawMode;
+import com.gabriel.drawfx.SelectionMode;
 import com.gabriel.drawfx.ShapeMode;
 import com.gabriel.draw.view.DrawingView;
 import com.gabriel.drawfx.service.AppService;
@@ -15,6 +16,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
 
 public class DrawingController  implements MouseListener, MouseMotionListener {
+    Point start;
     private Point end;
     final private DrawingView drawingView;
 
@@ -33,7 +35,6 @@ public class DrawingController  implements MouseListener, MouseMotionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        Point start;
         if(appService.getDrawMode() == DrawMode.Idle) {
             start = e.getPoint();
             switch (appService.getShapeMode()){
@@ -54,8 +55,9 @@ public class DrawingController  implements MouseListener, MouseMotionListener {
                     currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,false );
                     appService.setDrawMode(DrawMode.MousePressed);
                     break;
-                case SELECT:
+                case Select:
                     appService.search(start);
+                    currentShape = appService.getDrawing().getSelectedShapes().get(0);
                 default:
                     return;
             }
@@ -69,7 +71,7 @@ public class DrawingController  implements MouseListener, MouseMotionListener {
          if(appService.getDrawMode() == DrawMode.MousePressed){
              end = e.getPoint();
              currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,true );
-             appService.scale(currentShape,end);
+             appService.scale(currentShape,start, end);
              currentShape.setSelected(true);
              currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,false );
              appService.create(currentShape);
@@ -91,9 +93,23 @@ public class DrawingController  implements MouseListener, MouseMotionListener {
     public void mouseDragged(MouseEvent e) {
         if(appService.getDrawMode() == DrawMode.MousePressed) {
                 end = e.getPoint();
-                currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,true );
-                appService.scale(currentShape,end);
-                currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,true );
+                if(appService.getShapeMode() == ShapeMode.Select){
+                    if(currentShape.isSelected()){
+                        switch(currentShape.getSelectionMode()) {
+                            case UpperLeft:
+                                currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, true);
+                                appService.scale(currentShape, start,end);
+                                currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, true);
+                                break;
+                            // case ...
+                        }
+                    }
+                }
+                else {
+                    currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, true);
+                    appService.scale(currentShape, end);
+                    currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, true);
+                }
            }
     }
 

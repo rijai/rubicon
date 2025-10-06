@@ -26,6 +26,7 @@ public interface AppService {
 
     void move(Shape shape, Point newLoc);
     void scale(Shape shape, Point newEnd);
+    void scale(Shape shape, Point start, Point end);
 
     void create(Shape shape);
     void delete(Shape shape);

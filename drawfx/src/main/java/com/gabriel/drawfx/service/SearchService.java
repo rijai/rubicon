@@ -1,7 +1,6 @@
 package com.gabriel.drawfx.service;
-//aaaaadfgg
-//dfgfdg
 
+import com.gabriel.drawfx.SelectionMode;
 import com.gabriel.drawfx.model.Drawing;
 import com.gabriel.drawfx.model.Shape;
 
@@ -18,6 +17,21 @@ public class SearchService {
             int width = shape.getWidth();
             int height = shape.getHeight();
             if(p.x > loc.x-r && p.x < loc.x+ width+r && p.y > loc.y -r && p.y < loc.y+ height + r){
+                if(p.x>loc.x-2*r && p.x<loc.x+2*r && p.y >loc.y-2*r  && p.y< loc.y+2*r  ){
+                    shape.setSelectionMode(SelectionMode.UpperLeft);
+                } else if(p.x>loc.x-r && p.x<loc.x+r && p.y >loc.y-r  && p.y< loc.y+r  ) {
+                    shape.setSelectionMode(SelectionMode.LowerLeft);
+                } else if(p.x>loc.x-r && p.x<loc.x+r && p.y >loc.y-r  && p.y< loc.y+r  ) {
+                    shape.setSelectionMode(SelectionMode.LowerLeft);
+                } else if(p.x>loc.x-r && p.x<loc.x+r && p.y >loc.y-r  && p.y< loc.y+r  ) {
+                    shape.setSelectionMode(SelectionMode.LowerLeft);
+                } else if(p.x>loc.x-r && p.x<loc.x+r && p.y >loc.y-r  && p.y< loc.y+r  ) {
+                    shape.setSelectionMode(SelectionMode.LowerLeft);
+                } else if(p.x>loc.x-r && p.x<loc.x+r && p.y >loc.y-r  && p.y< loc.y+r  ) {
+                    shape.setSelectionMode(SelectionMode.LowerLeft);
+                }
+                else
+                    shape.setSelectionMode(SelectionMode.None);
                 drawing.getSelectedShapes().add(shape);
                 shape.setSelected(true);
                 return;

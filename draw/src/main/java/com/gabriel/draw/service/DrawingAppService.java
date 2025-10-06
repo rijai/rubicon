@@ -90,6 +90,12 @@ public class DrawingAppService implements AppService {
     }
 
     @Override
+    public void scale(Shape shape, Point start, Point end) {
+        shape.setWidth(end.x - shape.getLocation().x);
+        shape.setHeight(end.y - shape.getLocation().y);
+    }
+
+    @Override
     public void create(Shape shape) {
         shape.setId(this.drawing.getShapes().size());
         this.drawing.getShapes().add(shape);
