@@ -14,6 +14,7 @@ public class Drawing {
     private Color fill;
     private ShapeMode shapeMode = ShapeMode.Rectangle;
     private DrawMode drawMode = DrawMode.Idle;
+    private int SearchRadius = 5;
     List<Shape> shapes;
     List<Shape> selectedShapes;
     public Drawing(){

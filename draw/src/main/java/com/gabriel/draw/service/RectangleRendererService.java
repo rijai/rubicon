@@ -7,6 +7,9 @@ import com.gabriel.drawfx.service.RendererService;
 import java.awt.*;
 
 public class RectangleRendererService implements RendererService {
+    public RectangleRendererService(){
+        super();
+    }
     @Override
     public void render(Graphics g, Shape shape, boolean xor) {
         Rectangle line = (Rectangle) shape;
@@ -19,5 +22,13 @@ public class RectangleRendererService implements RendererService {
         int x = shape.getLocation().x;
         int y = shape.getLocation().y;
         g.drawRect(x, y, shape.getWidth(), shape.getHeight());
+        if(shape.isSelected()){
+            Point loc = shape.getLocation();
+            int width = shape.getWidth();
+            int height = shape.getHeight();
+            int r = shape.getR();
+            g.drawRect(loc.x-r,loc.y-r, 2*r,2*r);
+            g.drawRect(loc.x-r,loc.y+height-r, 2*r, 2*r);
+        }
     }
 }

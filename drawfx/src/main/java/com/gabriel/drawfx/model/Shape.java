@@ -6,9 +6,10 @@ import lombok.Data;
 import java.awt.*;
 @Data
 public abstract class Shape {
+    boolean selected;
+    int r = 5;
     int id;
     private Point location;
-    //private Point end;
     int width;
     int height;
     private Color color;
@@ -18,6 +19,9 @@ public abstract class Shape {
         this.setLocation(location);
         width = 0;
         height = 0;
+        this.setColor(Color.RED);
+        this.setFill(null);
+        selected = false;
     }
     public Shape(Point location, Point endpoint){
         this.setLocation(location);
@@ -28,6 +32,13 @@ public abstract class Shape {
         this.setLocation(location);
         this.width = width;
         this.height = height;
+        this.setColor(Color.RED);
+        this.setFill(null);
     }
 
+    public void drawSelected (Graphics g){
+        g.drawRect(location.x-r, location.y-r,r*2,  r*2 );
+        //....
+        g.drawRect(location.x+width-r, location.y+height-r,  + r*2, r*2);
+    }
 }

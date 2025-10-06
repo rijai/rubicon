@@ -54,6 +54,8 @@ public class DrawingController  implements MouseListener, MouseMotionListener {
                     currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,false );
                     appService.setDrawMode(DrawMode.MousePressed);
                     break;
+                case SELECT:
+                    appService.search(start);
                 default:
                     return;
             }
@@ -68,6 +70,7 @@ public class DrawingController  implements MouseListener, MouseMotionListener {
              end = e.getPoint();
              currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,true );
              appService.scale(currentShape,end);
+             currentShape.setSelected(true);
              currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,false );
              appService.create(currentShape);
              appService.setDrawMode(DrawMode.Idle);
