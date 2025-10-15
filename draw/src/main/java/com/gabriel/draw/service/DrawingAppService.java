@@ -94,6 +94,11 @@ public class DrawingAppService implements AppService {
     }
 
     @Override
+    public void scale(Shape shape, Point end) {
+        scalerService.scale(shape, end);
+    }
+
+    @Override
     public void create(Shape shape) {
         shape.setId(this.drawing.getShapes().size());
         this.drawing.getShapes().add(shape);
@@ -148,5 +153,25 @@ public class DrawingAppService implements AppService {
     public void search(Point p) {
         searchService.search(this,p);
         repaint();
+    }
+
+    @Override
+    public void open() {
+
+    }
+
+    @Override
+    public void save() {
+
+    }
+
+    @Override
+    public void saveas(String filename) {
+
+    }
+
+    @Override
+    public void newDrawing() {
+
     }
 }

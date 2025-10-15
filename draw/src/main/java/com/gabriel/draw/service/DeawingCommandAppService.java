@@ -84,6 +84,11 @@ public class DeawingCommandAppService implements AppService {
     }
 
     @Override
+    public void scale(Shape shape, Point end) {
+        appService.scale(shape,end);
+    }
+
+    @Override
     public void create(Shape shape) {
         Command command = new AddShapeCommand(appService, shape);
         CommandService.ExecuteCommand(command);
@@ -136,6 +141,26 @@ public class DeawingCommandAppService implements AppService {
 
     @Override
     public void search(Point p) {
+
+    }
+
+    @Override
+    public void open() {
+
+    }
+
+    @Override
+    public void save() {
+
+    }
+
+    @Override
+    public void saveas(String filename) {
+
+    }
+
+    @Override
+    public void newDrawing() {
 
     }
 }
