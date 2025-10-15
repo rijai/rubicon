@@ -24,9 +24,9 @@ public interface AppService {
     Color getFill();
     void setFill(Color color);
 
-    void move(Shape shape, Point newLoc);
-    void scale(Shape shape, Point newEnd);
+    void move (Shape shape, Point Start, Point newLoc);
     void scale(Shape shape, Point start, Point end);
+    void scale(Shape shape, Point end);
 
     void create(Shape shape);
     void delete(Shape shape);
@@ -43,4 +43,9 @@ public interface AppService {
     void setSearchRadius(int radius);
 
     void search(Point p);
+
+    void open();
+    void save();
+    void saveas(String filename);
+    void newDrawing();
 }

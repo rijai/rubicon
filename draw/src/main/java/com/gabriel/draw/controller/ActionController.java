@@ -3,15 +3,19 @@ package com.gabriel.draw.controller;
 import com.gabriel.drawfx.ActionCommand;
 import com.gabriel.drawfx.ShapeMode;
 import com.gabriel.drawfx.service.AppService;
+import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class ActionController implements ActionListener {
     AppService appService;
     Component component;
+    @Setter
+    JFrame frame;
 
     public  ActionController(AppService appService){
         this.appService = appService;
@@ -37,6 +41,16 @@ public class ActionController implements ActionListener {
         } else if (ActionCommand.FILL.equals(cmd)) {
             Color color = JColorChooser.showDialog(component, "Select color", appService.getColor() );
             appService.setFill(color);
+        } else if (ActionCommand.SAVEAS.equals(cmd)) {
+            FileDialog fDialog = new FileDialog(frame, "Save", FileDialog.SAVE);
+            fDialog.setVisible(true);
+            String path = fDialog.getDirectory() + fDialog.getFile();
+            File f = new File(path);
+
+
         }
+
+        // TODO Insert the handler for the File menuitems.
+
     }
 }

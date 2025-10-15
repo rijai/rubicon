@@ -3,10 +3,11 @@ package com.gabriel.draw.service;
 import com.gabriel.draw.model.Rectangle;
 import com.gabriel.drawfx.model.Shape;
 import com.gabriel.drawfx.service.RendererService;
+import com.gabriel.drawfx.service.ShapeRendererService;
 
 import java.awt.*;
 
-public class RectangleRendererService implements RendererService {
+public class RectangleRendererService extends ShapeRendererService {
     public RectangleRendererService(){
         super();
     }
@@ -21,14 +22,18 @@ public class RectangleRendererService implements RendererService {
         }
         int x = shape.getLocation().x;
         int y = shape.getLocation().y;
-        g.drawRect(x, y, shape.getWidth(), shape.getHeight());
-        if(shape.isSelected()){
-            Point loc = shape.getLocation();
-            int width = shape.getWidth();
-            int height = shape.getHeight();
-            int r = shape.getR();
-            g.drawRect(loc.x-r,loc.y-r, 2*r,2*r);
-            g.drawRect(loc.x-r,loc.y+height-r, 2*r, 2*r);
+        int width = shape.getWidth() ;
+        int height = shape.getHeight();
+        if(width < 0){
+            x = x + width;
+            width = -width;
         }
+        if(height < 0){
+            y = y + height;
+            height = -height;
+        }
+        g.drawRect(x, y, width, height);
+
+        super.render(g, shape, xor);
     }
 }

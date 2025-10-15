@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 @Data
 public class Drawing {
-
+    private String filename;
     private Color color;
     private Color fill;
     private ShapeMode shapeMode = ShapeMode.Rectangle;
@@ -17,6 +17,7 @@ public class Drawing {
     private int SearchRadius = 5;
     List<Shape> shapes;
     List<Shape> selectedShapes;
+    String Filename;
     public Drawing(){
         color = Color.RED;
         fill = Color.WHITE;

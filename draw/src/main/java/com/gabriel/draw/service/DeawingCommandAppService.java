@@ -74,13 +74,18 @@ public class DeawingCommandAppService implements AppService {
     }
 
     @Override
-    public void move(Shape shape, Point newLoc) {
-        appService.move(shape, newLoc);
+    public void move(Shape shape, Point Start, Point newLoc) {
+
     }
 
     @Override
-    public void scale(Shape shape, Point newEnd) {
-        appService.scale(shape,newEnd);
+    public void scale(Shape shape, Point start, Point end) {
+        appService.scale(shape, start, end);
+    }
+
+    @Override
+    public void scale(Shape shape, Point end) {
+        appService.scale(shape,end);
     }
 
     @Override
@@ -131,6 +136,31 @@ public class DeawingCommandAppService implements AppService {
 
     @Override
     public void setSearchRadius(int radius) {
+
+    }
+
+    @Override
+    public void search(Point p) {
+
+    }
+
+    @Override
+    public void open() {
+
+    }
+
+    @Override
+    public void save() {
+
+    }
+
+    @Override
+    public void saveas(String filename) {
+
+    }
+
+    @Override
+    public void newDrawing() {
 
     }
 }

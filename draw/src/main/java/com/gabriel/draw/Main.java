@@ -27,7 +27,6 @@ public class Main {
         ActionListener actionListener = new ActionController(appService);
         DrawingMenuBar drawingMenuBar = new DrawingMenuBar( actionListener);
         DrawingToolBar drawingToolBar = new DrawingToolBar(actionListener);
-
         DrawingView drawingView = new DrawingView(drawing);
         DrawingController drawingController = new DrawingController(appService, drawingView);
         drawingView.addMouseMotionListener(drawingController);

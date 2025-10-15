@@ -17,6 +17,8 @@ public class SearchService {
             int width = shape.getWidth();
             int height = shape.getHeight();
             if(p.x > loc.x-r && p.x < loc.x+ width+r && p.y > loc.y -r && p.y < loc.y+ height + r){
+                shape.setSelected(true);
+                drawing.getSelectedShapes().add(shape);
                 if(p.x>loc.x-2*r && p.x<loc.x+2*r && p.y >loc.y-2*r  && p.y< loc.y+2*r  ){
                     shape.setSelectionMode(SelectionMode.UpperLeft);
                 } else if(p.x>loc.x-r && p.x<loc.x+r && p.y >loc.y-r  && p.y< loc.y+r  ) {
@@ -30,10 +32,10 @@ public class SearchService {
                 } else if(p.x>loc.x-r && p.x<loc.x+r && p.y >loc.y-r  && p.y< loc.y+r  ) {
                     shape.setSelectionMode(SelectionMode.LowerLeft);
                 }
-                else
+                else{
                     shape.setSelectionMode(SelectionMode.None);
-                drawing.getSelectedShapes().add(shape);
-                shape.setSelected(true);
+                }
+
                 return;
             }
         }

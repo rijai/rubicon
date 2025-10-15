@@ -4,5 +4,7 @@ public enum ShapeMode {
     Line,
     Rectangle,
     Ellipse,
-    Select
+    Select,
+    Move,
+    Scale
 }

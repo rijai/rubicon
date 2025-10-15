@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class Ellipse extends Shape {
     public Ellipse(Point start, Point end) {
-        super(start);
+        super(start, end);
         this.setRendererService(new EllipseRenderer());
     }
     public Ellipse(Point start){

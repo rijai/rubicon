@@ -38,31 +38,30 @@ public class DrawingController  implements MouseListener, MouseMotionListener {
         if(appService.getDrawMode() == DrawMode.Idle) {
             start = e.getPoint();
             switch (appService.getShapeMode()){
-                case Line:  currentShape = new Line(start, start);
-                    currentShape.setColor(appService.getColor());
-                    currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,false );
-                    appService.setDrawMode(DrawMode.MousePressed);
+                case Line:
+                    currentShape = new Line(start);
                     break;
                 case Rectangle:
-                    currentShape = new Rectangle(start, start);
-                    currentShape.setColor(appService.getColor());
-                    currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,false );
-                    appService.setDrawMode(DrawMode.MousePressed);
+                    currentShape = new Rectangle(start);
                     break;
                 case  Ellipse:
-                    currentShape = new Ellipse(start, start);
-                    currentShape.setColor(appService.getColor());
-                    currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,false );
-                    appService.setDrawMode(DrawMode.MousePressed);
+                    currentShape = new Ellipse(start);
                     break;
                 case Select:
                     appService.search(start);
                     currentShape = appService.getDrawing().getSelectedShapes().get(0);
+                    if(currentShape != null){
+                        currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,false );
+                        currentShape.setSelected(true);
+                        currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,false );
+                        return;
+                    }
                 default:
                     return;
             }
-
-
+            currentShape.setColor(appService.getColor());
+            currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,false );
+            appService.setDrawMode(DrawMode.MousePressed);
         }
     }
 
@@ -71,7 +70,7 @@ public class DrawingController  implements MouseListener, MouseMotionListener {
          if(appService.getDrawMode() == DrawMode.MousePressed){
              end = e.getPoint();
              currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,true );
-             appService.scale(currentShape,start, end);
+             appService.scale(currentShape, end);
              currentShape.setSelected(true);
              currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,false );
              appService.create(currentShape);
@@ -98,7 +97,7 @@ public class DrawingController  implements MouseListener, MouseMotionListener {
                         switch(currentShape.getSelectionMode()) {
                             case UpperLeft:
                                 currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, true);
-                                appService.scale(currentShape, start,end);
+                                appService.scale(currentShape, end);
                                 currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, true);
                                 break;
                             // case ...
