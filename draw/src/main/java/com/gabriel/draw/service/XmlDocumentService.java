@@ -166,4 +166,4 @@ public class XmlDocumentService implements DocumentService {
         color = new Color(rcolor, gcolor, bcolor);
         return color;
     }
-    }
+ }

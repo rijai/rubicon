@@ -8,12 +8,12 @@ import java.awt.*;
 @Data
 public abstract class Shape {
     boolean selected = false;
-    SelectionMode selectionMode = SelectionMode.None;
-    int r = 2;
-    int id;
+    private SelectionMode selectionMode = SelectionMode.None;
+    private int r = 2;
+    private int id = 0;
     private Point location;
-    int width = 0;
-    int height = 0;
+    private int width = 0;
+    private int height = 0;
     private Color color = Color.RED;
     private Color fill;
     private RendererService rendererService;
@@ -37,5 +37,9 @@ public abstract class Shape {
         this.setLocation(location);
         this.width = width;
         this.height = height;
+    }
+
+    public boolean equals (Shape shape){
+        return (this.id == shape.id);
     }
 }

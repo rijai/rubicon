@@ -21,58 +21,94 @@ public class DrawingMenuBar extends JMenuBar {
 
 // Insert the File menu and menuitems
 
-        JMenu fileMenu = new JMenu("File");
-        fileMenu.setMnemonic(KeyEvent.VK_F);
-        add(fileMenu);
-        JMenuItem saveasMenuItem = new JMenuItem("SaveAs");
-        saveasMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
-        saveasMenuItem.addActionListener(actionListener);
-        saveasMenuItem.setActionCommand(ActionCommand.SAVEAS);
-        fileMenu.add(saveasMenuItem);
+        JMenu menu = new JMenu("File");
+        menu.setMnemonic(KeyEvent.VK_F);
+
+        JMenuItem menuItem = new JMenuItem("New");
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
+        menuItem.addActionListener(actionListener);
+        menuItem.setActionCommand(ActionCommand.NEW);
+        menu.add(menuItem);
+
+        menuItem = new JMenuItem("Open");
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
+        menuItem.addActionListener(actionListener);
+        menuItem.setActionCommand(ActionCommand.OPEN);
+        menu.add(menuItem);
 
 
+        menuItem = new JMenuItem("SaveAs");
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
+        menuItem.addActionListener(actionListener);
+        menuItem.setActionCommand(ActionCommand.SAVEAS);
+        menu.add(menuItem);
 
-        JMenu editMenu = new JMenu("Edit");
-        editMenu.setMnemonic(KeyEvent.VK_E);
-        add(editMenu);
-        JMenuItem undoMenuItem = new JMenuItem("Umdo");
-        undoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK));
-        undoMenuItem.addActionListener(actionListener);
-        undoMenuItem.setActionCommand(ActionCommand.UNDO);
-        editMenu.add(undoMenuItem);
-        JMenuItem redoMenuItem = new JMenuItem("Redo");
-        redoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));;
-        redoMenuItem.addActionListener(actionListener);
-        editMenu.add(redoMenuItem);
+        menuItem = new JMenuItem("Save");
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
+        menuItem.addActionListener(actionListener);
+        menuItem.setActionCommand(ActionCommand.SAVE);
+        menu.add(menuItem);
+
+        add(menu);
 
 
-        JMenu drawMenu = new JMenu("Draw");
-        drawMenu.setMnemonic(KeyEvent.VK_D);
-        this.add(drawMenu);
-        JMenuItem lineMenuItem = new JMenuItem("Line");
-        drawMenu.add(lineMenuItem);
-        lineMenuItem.setActionCommand(ActionCommand.LINE);
-        lineMenuItem.addActionListener(actionListener);
-        JMenuItem rectangleMenuItem = new JMenuItem("Rectangle");
-        drawMenu.add(rectangleMenuItem);
-        rectangleMenuItem.setActionCommand(ActionCommand.RECT);
-        rectangleMenuItem.addActionListener(actionListener);
-        JMenuItem ellipseMenuItem = new JMenuItem("Ellipse");
-        drawMenu.add(ellipseMenuItem);
-        ellipseMenuItem.setActionCommand(ActionCommand.ELLIPSE);
-        ellipseMenuItem.addActionListener(actionListener);
+        menu = new JMenu("Edit");
+        menu.setMnemonic(KeyEvent.VK_E);
 
-        JMenu propMenu = new JMenu("Properties");
-        propMenu.setMnemonic(KeyEvent.VK_P);
-        JMenuItem colorMenuItem = new JMenuItem("Color");
-        propMenu.add(colorMenuItem);
-        this.add(propMenu);
-        colorMenuItem.setActionCommand(ActionCommand.COLOR);
-        colorMenuItem.addActionListener(actionListener);
+        menuItem = new JMenuItem("Umdo");
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK));
+        menuItem.addActionListener(actionListener);
+        menuItem.setActionCommand(ActionCommand.UNDO);
+        menu.add(menuItem);
 
-        JMenuItem fillMenuItem = new JMenuItem("Fill");
-        propMenu.add(fillMenuItem);
-        fillMenuItem.setActionCommand(ActionCommand.FILL);
-        fillMenuItem.addActionListener(actionListener);
+        menuItem = new JMenuItem("Redo");
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));;
+        menuItem.addActionListener(actionListener);
+        menuItem.setActionCommand(ActionCommand.REDO);
+        menu.add(menuItem);
+
+        add(menu);
+
+        menu = new JMenu("Draw");
+        menu.setMnemonic(KeyEvent.VK_D);
+
+        menuItem = new JMenuItem("Line");
+        menuItem.setActionCommand(ActionCommand.LINE);
+        menuItem.addActionListener(actionListener);
+        menu.add(menuItem);
+
+        menuItem = new JMenuItem("Rectangle");
+        menuItem.setActionCommand(ActionCommand.RECT);
+        menuItem.addActionListener(actionListener);
+        menu.add(menuItem);
+
+        menuItem = new JMenuItem("Ellipse");
+        menu.add(menuItem);
+        menuItem.setActionCommand(ActionCommand.ELLIPSE);
+        menuItem.addActionListener(actionListener);
+
+        menuItem = new JMenuItem("Select");
+        menuItem.setActionCommand(ActionCommand.SELECT);
+        menuItem.addActionListener(actionListener);
+        menu.add(menuItem);
+
+        add(menu);
+
+        // Properties
+        menu = new JMenu("Properties");
+        menu.setMnemonic(KeyEvent.VK_P);
+
+        menuItem = new JMenuItem("Color");
+        menuItem.setActionCommand(ActionCommand.COLOR);
+        menuItem.addActionListener(actionListener);
+        menu.add(menuItem);
+
+        menuItem = new JMenuItem("Fill");
+        menuItem.setActionCommand(ActionCommand.FILL);
+        menuItem.addActionListener(actionListener);
+        menu.add(menuItem);
+
+        this.add(menu);
+
     }
 }

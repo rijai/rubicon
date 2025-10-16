@@ -1,6 +1,7 @@
 package com.gabriel.draw.service;
 
 import com.gabriel.draw.model.Rectangle;
+import com.gabriel.drawfx.model.Drawing;
 import com.gabriel.drawfx.model.Shape;
 import com.gabriel.drawfx.service.RendererService;
 import com.gabriel.drawfx.service.ShapeRendererService;
@@ -8,9 +9,7 @@ import com.gabriel.drawfx.service.ShapeRendererService;
 import java.awt.*;
 
 public class RectangleRendererService extends ShapeRendererService {
-    public RectangleRendererService(){
-        super();
-    }
+
     @Override
     public void render(Graphics g, Shape shape, boolean xor) {
         Rectangle line = (Rectangle) shape;

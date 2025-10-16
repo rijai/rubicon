@@ -2,7 +2,7 @@ package com.gabriel.draw;
 
 import com.gabriel.draw.controller.ActionController;
 import com.gabriel.draw.view.DrawingMenuBar;
-import com.gabriel.draw.service.DeawingCommandAppService;
+import com.gabriel.draw.service.DrawingCommandAppService;
 import com.gabriel.draw.service.DrawingAppService;
 import com.gabriel.draw.controller.DrawingController;
 import com.gabriel.draw.view.DrawingToolBar;
@@ -20,21 +20,22 @@ public class Main {
     public static void main(String[] args) {
         Drawing drawing = new Drawing();
         AppService drawingAppService = new DrawingAppService();
-        AppService appService = new DeawingCommandAppService(drawingAppService);
+        AppService appService = DrawingCommandAppService.getInstance(drawingAppService);
 
         DrawingFrame drawingFrame = new DrawingFrame(appService);
 
         ActionListener actionListener = new ActionController(appService);
         DrawingMenuBar drawingMenuBar = new DrawingMenuBar( actionListener);
+        drawingFrame.setJMenuBar(drawingMenuBar);
+        drawingMenuBar.setVisible(true);
+
         DrawingToolBar drawingToolBar = new DrawingToolBar(actionListener);
-        DrawingView drawingView = new DrawingView(drawing);
+        DrawingView drawingView = new DrawingView(appService);
         DrawingController drawingController = new DrawingController(appService, drawingView);
+        drawingController.setDrawingView(drawingView);
         drawingView.addMouseMotionListener(drawingController);
         drawingView.addMouseListener(drawingController);
-        drawingFrame.setContentPane(drawingView);
-
-        drawingMenuBar.setVisible(true);
-        drawingFrame.setJMenuBar(drawingMenuBar);
+        drawingFrame.getContentPane().add(drawingView);
 
         drawingFrame.setVisible(true);
         drawingFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

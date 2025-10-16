@@ -5,26 +5,30 @@ import com.gabriel.drawfx.DrawMode;
 import com.gabriel.drawfx.ShapeMode;
 import com.gabriel.drawfx.model.Drawing;
 import com.gabriel.drawfx.model.Shape;
-import com.gabriel.drawfx.service.AppService;
-import com.gabriel.drawfx.service.MoverService;
-import com.gabriel.drawfx.service.ScalerService;
-import com.gabriel.drawfx.service.SearchService;
+import com.gabriel.drawfx.service.*;
+import lombok.Setter;
 
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 
 public class DrawingAppService implements AppService {
 
     final private Drawing drawing;;
+
+
     MoverService moverService;
     ScalerService scalerService;
     SearchService searchService;
-    JPanel drawingView;
+    XmlDocumentService xmlDocumentService;
+
+    DocumentService documentService;
     public DrawingAppService(){
         drawing = new Drawing();
         moverService = new MoverService();
         scalerService = new ScalerService();
         searchService = new SearchService();
+        xmlDocumentService = new XmlDocumentService(drawing);
         drawing.setDrawMode(DrawMode.Idle);
         drawing.setShapeMode(ShapeMode.Ellipse);
     }
@@ -85,12 +89,7 @@ public class DrawingAppService implements AppService {
 
     @Override
     public void scale(Shape shape, Point start, Point end) {
-        int dx = end.x - start.x;
-        int dy = end.y - start.y;
-        shape.setWidth(shape.getWidth()+ dx);
-        shape.setHeight(shape.getHeight() + dy);
-        shape.getLocation().x = shape.getLocation().x + dx;
-        shape.getLocation().y = shape.getLocation().y + dy;
+        scalerService.scale(shape,start,end);
     }
 
     @Override
@@ -100,8 +99,8 @@ public class DrawingAppService implements AppService {
 
     @Override
     public void create(Shape shape) {
-        shape.setId(this.drawing.getShapes().size());
         this.drawing.getShapes().add(shape);
+        shape.setId(this.drawing.getShapes().size());
     }
 
     @Override
@@ -125,39 +124,23 @@ public class DrawingAppService implements AppService {
     }
 
     @Override
-    public JPanel getView() {
-        return drawingView;
-    }
-
-    @Override
-    public void setView(JPanel panel) {
-        this.drawingView = panel;
-    }
-
-    @Override
-    public void repaint() {
-        drawingView.repaint();
-    }
-
-    @Override
     public int getSearchRadius() {
-        return 0;
+        return drawing.getSearchRadius();
     }
 
     @Override
     public void setSearchRadius(int radius) {
-
+        drawing.setSearchRadius(radius);
     }
 
     @Override
     public void search(Point p) {
         searchService.search(this,p);
-        repaint();
     }
 
     @Override
-    public void open() {
-
+    public void open(String filename) {
+        xmlDocumentService.open(filename);
     }
 
     @Override
@@ -167,11 +150,40 @@ public class DrawingAppService implements AppService {
 
     @Override
     public void saveas(String filename) {
-
+        xmlDocumentService.saveAs(filename);
     }
 
     @Override
     public void newDrawing() {
 
+    }
+
+    @Override
+    public void select(Shape selectedShape) {
+        List<Shape> selectedShapes = drawing.getShapes();
+        for(Shape shape : selectedShapes){
+            if(shape.equals(selectedShape)){
+                shape.setSelected(true);
+            }
+            else {
+                shape.setSelected(false);
+            }
+        }
+    }
+
+    @Override
+    public void unselect(Shape shape) {
+
+    }
+
+    @Override
+    public Shape getSelectedShape() {
+        List<Shape> shapes = drawing.getShapes();
+        for (Shape shape : shapes){
+            if(shape.isSelected()){
+                return shape;
+            }
+        }
+        return null;
     }
 }

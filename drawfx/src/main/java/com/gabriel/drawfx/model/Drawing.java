@@ -16,12 +16,10 @@ public class Drawing {
     private DrawMode drawMode = DrawMode.Idle;
     private int SearchRadius = 5;
     List<Shape> shapes;
-    List<Shape> selectedShapes;
     String Filename;
     public Drawing(){
         color = Color.RED;
         fill = Color.WHITE;
-        selectedShapes = new ArrayList<>();
         shapes = new ArrayList<>();
     }
 }

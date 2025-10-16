@@ -13,23 +13,33 @@ import com.gabriel.drawfx.service.AppService;
 import javax.swing.*;
 import java.awt.*;
 
-public class DeawingCommandAppService implements AppService {
+public class DrawingCommandAppService implements AppService {
     public AppService appService;
-    public DeawingCommandAppService(AppService appService){
-        this.appService = appService;
+    protected static AppService drawingCommandAppService = null;
 
+    protected DrawingCommandAppService(AppService appService){
+        this.appService = appService;
+    }
+
+    public static AppService getInstance(){
+        return drawingCommandAppService;
+    }
+
+    public static AppService getInstance(AppService appService){
+        if(drawingCommandAppService == null){
+            drawingCommandAppService = new DrawingCommandAppService(appService);
+        };
+        return drawingCommandAppService;
     }
 
     @Override
     public void undo() {
         CommandService.undo();;
-        appService.repaint();
     }
 
     @Override
     public void redo() {
         CommandService.redo();
-        appService.repaint();
     }
 
     @Override
@@ -115,39 +125,25 @@ public class DeawingCommandAppService implements AppService {
     }
 
     @Override
-    public JPanel getView() {
-        return appService.getView();
-    }
-
-    @Override
-    public void setView(JPanel panel) {
-        appService.setView(panel);
-    }
-
-    @Override
-    public void repaint() {
-        appService.repaint();
-    }
-
-    @Override
     public int getSearchRadius() {
-        return 0;
+        return appService.getSearchRadius();
     }
 
     @Override
     public void setSearchRadius(int radius) {
-
+        appService.setSearchRadius(radius);
     }
 
     @Override
     public void search(Point p) {
-
+        appService.search(p);
     }
 
     @Override
-    public void open() {
-
+    public void open(String filename) {
+        appService.open(filename);
     }
+
 
     @Override
     public void save() {
@@ -156,11 +152,26 @@ public class DeawingCommandAppService implements AppService {
 
     @Override
     public void saveas(String filename) {
-
+        appService.saveas(filename);
     }
 
     @Override
     public void newDrawing() {
 
+    }
+
+    @Override
+    public void select(Shape selectedShape) {
+        appService.select(selectedShape);
+    }
+
+    @Override
+    public void unselect(Shape selectedShape) {
+        unselect(selectedShape);
+    }
+
+    @Override
+    public Shape getSelectedShape() {
+        return appService.getSelectedShape();
     }
 }

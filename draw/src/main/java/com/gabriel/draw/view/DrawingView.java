@@ -5,20 +5,23 @@ import com.gabriel.draw.controller.DrawingWindowController;
 import com.gabriel.drawfx.model.Drawing;
 import com.gabriel.drawfx.model.Shape;
 import com.gabriel.drawfx.service.AppService;
-
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 
 public class DrawingView extends JPanel {
-    Drawing drawing;
+    AppService appService;
 
-    public DrawingView(Drawing drawing){
-        this.drawing  = drawing;
+    public DrawingView(AppService appService){
+        this.appService  = appService;
     }
 
     @Override
     public void paint(Graphics g) {
-        for(Shape shape : drawing.getShapes()){
+        super.paint(g);
+        Drawing drawing = appService.getDrawing();
+        List<Shape> shapes  = drawing.getShapes();
+        for(Shape shape : shapes){
             shape.getRendererService().render(g, shape, false);
         }
     }

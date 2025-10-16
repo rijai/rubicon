@@ -1,5 +1,6 @@
 package com.gabriel.drawfx.service;
 
+import com.gabriel.drawfx.SelectionMode;
 import com.gabriel.drawfx.model.Shape;
 
 import java.awt.*;
@@ -14,9 +15,34 @@ public final class  ScalerService {
     public void scale(Shape shape, Point start, Point end){
         int dx = end.x - start.x;
         int dy = end.y - start.y;
-        shape.getLocation().x += dx;
-        shape.getLocation().y += dy;
-        shape.setWidth(shape.getWidth() + dx);
-        shape.setHeight(shape.getHeight()+dy);
+        int height = shape.getHeight();
+        int width = shape.getWidth();
+        if(shape.getSelectionMode() == SelectionMode.UpperLeft) {
+            shape.getLocation().x += dx;
+            shape.getLocation().y += dy;
+            shape.setWidth(width + dx);
+            shape.setHeight(height + dy);
+        } if(shape.getSelectionMode() == SelectionMode.LowerLeft) {
+            shape.getLocation().x += dx;
+            shape.setWidth(width + dx);
+            shape.setHeight(height + dy);
+        } else if(shape.getSelectionMode() == SelectionMode.UpperRight){
+            shape.getLocation().y += dy;
+            shape.setWidth(width + dx);
+            shape.setHeight(height - dy);
+        } if(shape.getSelectionMode() == SelectionMode.LowerRight){
+            shape.setWidth(width + dx);
+            shape.setHeight(height+ dy);
+        } else if(shape.getSelectionMode() == SelectionMode.MiddleRight){
+            shape.setWidth(width + dx);
+        } else if(shape.getSelectionMode() == SelectionMode.MiddleLeft){
+            shape.setWidth(width - dx);
+            shape.getLocation().x += dx;
+        } else if(shape.getSelectionMode() == SelectionMode.MiddleTop) {
+            shape.setHeight(height - dy);
+            shape.getLocation().y += dy;
+        } else if(shape.getSelectionMode() == SelectionMode.MiddleBottom){
+            shape.setHeight(height + dy);
+        }
     }
 }

@@ -35,17 +35,19 @@ public interface AppService {
 
     Drawing getDrawing();
     void setDrawing(Drawing drawing);
-    JPanel getView();
-    void setView(JPanel panel);
-    void repaint();
 
     int getSearchRadius();
     void setSearchRadius(int radius);
 
     void search(Point p);
 
-    void open();
+    void open(String filename);
     void save();
     void saveas(String filename);
     void newDrawing();
+
+    void select(Shape shape);
+    void unselect(Shape shape);
+
+    Shape getSelectedShape();
 }

@@ -46,8 +46,10 @@ public class ActionController implements ActionListener {
             fDialog.setVisible(true);
             String path = fDialog.getDirectory() + fDialog.getFile();
             File f = new File(path);
+            appService.saveas(path);
 
-
+        } else if (ActionCommand.SELECT.equals(cmd)) {
+            appService.setShapeMode(ShapeMode.Select);
         }
 
         // TODO Insert the handler for the File menuitems.
