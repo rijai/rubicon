@@ -78,7 +78,12 @@ public class DrawingController  implements MouseListener, MouseMotionListener {
         if(appService.getDrawMode() == DrawMode.MousePressed) {
             if (appService.getShapeMode() == ShapeMode.Select) {
                 currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, true);
-                appService.scale(currentShape, start, end);
+                if(currentShape.getSelectionMode() == SelectionMode.None){
+                    appService.move(currentShape, start, end);
+                }
+                else {
+                    appService.scale(currentShape, start, end);
+                }
                 currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, false);
                 drawingView.repaint();
                 appService.setDrawMode(DrawMode.Idle);

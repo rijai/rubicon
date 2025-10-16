@@ -8,6 +8,7 @@ import com.gabriel.drawfx.model.Shape;
 import com.gabriel.drawfx.service.*;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;
@@ -172,8 +173,13 @@ public class DrawingAppService implements AppService {
     }
 
     @Override
-    public void unselect(Shape shape) {
-
+    public void unSelect(Shape selectedShape) {
+        List<Shape> shapes = drawing.getShapes();
+        for (Shape shape : shapes){
+            if(shape.getId() == selectedShape.getId()) {
+                shape.setSelected(false);
+            }
+        }
     }
 
     @Override
@@ -185,5 +191,16 @@ public class DrawingAppService implements AppService {
             }
         }
         return null;
+    }
+    @Override
+    public List<Shape> getSelectedShapes() {
+        List<Shape> shapes = drawing.getShapes();
+        List<Shape> selectedShapes = new ArrayList<>();
+        for (Shape shape : shapes){
+            if(shape.isSelected()){
+                selectedShapes.add(shape);
+            }
+        }
+        return selectedShapes;
     }
 }

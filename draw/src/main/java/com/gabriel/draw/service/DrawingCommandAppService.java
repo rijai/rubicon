@@ -12,6 +12,7 @@ import com.gabriel.drawfx.service.AppService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class DrawingCommandAppService implements AppService {
     public AppService appService;
@@ -84,8 +85,8 @@ public class DrawingCommandAppService implements AppService {
     }
 
     @Override
-    public void move(Shape shape, Point Start, Point newLoc) {
-
+    public void move(Shape shape, Point start, Point end) {
+        appService.move(shape,start, end);
     }
 
     @Override
@@ -147,7 +148,7 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void save() {
-
+        appService.save();;
     }
 
     @Override
@@ -157,7 +158,7 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void newDrawing() {
-
+        appService.newDrawing();
     }
 
     @Override
@@ -166,12 +167,17 @@ public class DrawingCommandAppService implements AppService {
     }
 
     @Override
-    public void unselect(Shape selectedShape) {
-        unselect(selectedShape);
+    public void unSelect(Shape selectedShape) {
+        appService.unSelect(selectedShape);
     }
 
     @Override
     public Shape getSelectedShape() {
         return appService.getSelectedShape();
+    }
+
+    @Override
+    public List<Shape> getSelectedShapes() {
+        return appService.getSelectedShapes();
     }
 }

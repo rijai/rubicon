@@ -7,6 +7,7 @@ import com.gabriel.drawfx.model.Shape;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public interface AppService {
     void undo();
@@ -47,7 +48,8 @@ public interface AppService {
     void newDrawing();
 
     void select(Shape shape);
-    void unselect(Shape shape);
+    void unSelect(Shape shape);
 
     Shape getSelectedShape();
+    List<Shape> getSelectedShapes();
 }
