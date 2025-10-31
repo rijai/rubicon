@@ -24,8 +24,8 @@ public class DrawingView extends JPanel {
     }
 
     @Override
-    public void paint(Graphics g) {
-        super.paint(g);
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         Drawing drawing = appService.getDrawing();
         List<Shape> shapes  = drawing.getShapes();
         for(Shape shape : shapes){
