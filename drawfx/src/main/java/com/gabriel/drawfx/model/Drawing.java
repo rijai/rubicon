@@ -35,8 +35,7 @@ public class Drawing {
     private String text = "Default text";
     public Drawing(){
         location  = new Point(0,0);
-        color = Color.RED;
-        fill = Color.WHITE;
+        color = Color.BLACK;
         font = new Font("Serif", Font.BOLD, 24);
         shapes = new ArrayList<>();
         this.start = new Point(0,0);
