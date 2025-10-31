@@ -26,6 +26,11 @@ public class DrawingView extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+
         Drawing drawing = appService.getDrawing();
         List<Shape> shapes  = drawing.getShapes();
         for(Shape shape : shapes){
