@@ -106,9 +106,7 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                         List<Shape> shapes = drawing.getShapes();
                         for (Shape shape : shapes) {
                             if (shape.isSelected()) {
-                                shape.getRendererService().render(drawingView.getGraphics(), shape, true);
                                 appService.move(shape, start, end);
-                                shape.getRendererService().render(drawingView.getGraphics(), shape, false);
                             }
                         }
                     } else {
@@ -118,7 +116,6 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                 }
             }
             else {
-                //currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, true);
                 appService.scale(currentShape, end);
                 currentShape.setText(drawing.getText());
                 currentShape.setFont(drawing.getFont());
@@ -129,7 +126,6 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                 Normalizer.normalize(currentShape);
                 appService.create(currentShape);
                 currentShape.setSelected(true);
-//              currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, false);
                 drawing.setSelectedShape(currentShape);
                 drawing.setShapeMode(ShapeMode.Select);
                 drawingView.repaint();
