@@ -150,10 +150,10 @@ public class PropertySheet extends PropertyPanel {
         IntegerProperty ylocProp = new IntegerProperty("Y Location", appService.getYLocation());
         propertyTable.addProperty(ylocProp);
 
-        IntegerProperty width = new IntegerProperty("Width", appService.getXLocation());
+        IntegerProperty width = new IntegerProperty("Width", appService.getWidth());
         propertyTable.addProperty(width );
 
-        IntegerProperty height = new IntegerProperty("Height", appService.getXLocation());
+        IntegerProperty height = new IntegerProperty("Height", appService.getHeight());
         propertyTable.addProperty(height);
 
         BooleanProperty prop3 = new BooleanProperty("Boolean", true);
