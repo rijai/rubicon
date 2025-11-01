@@ -65,11 +65,13 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                     case Line:
                         currentShape = new Line(start);
                         currentShape.setColor(appService.getColor());
+                        currentShape.setThickness(appService.getThickness()); // <-- ADD THIS
                         currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, false);
                         break;
                     case Rectangle:
                         currentShape = new Rectangle(start);
                         currentShape.setColor(appService.getColor());
+                        currentShape.setThickness(appService.getThickness()); // <-- ADD THIS
                         currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, false);
                         break;
                     case Text:
@@ -82,6 +84,7 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                     case Ellipse:
                         currentShape = new Ellipse(start);
                         currentShape.setColor(appService.getColor());
+                        currentShape.setThickness(appService.getThickness()); // <-- ADD THIS
                         currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, false);
                         break;
                     case Image:
@@ -111,7 +114,8 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                         }
                     } else {
                         appService.scale(selectedShape, start, end);
-                        Normalizer.normalize(selectedShape);
+//                        if (appService.getShapeMode() != ShapeMode.Line)
+//                            Normalizer.normalize(selectedShape);
                     }
                 }
             }
@@ -128,6 +132,7 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                 currentShape.setSelected(true);
                 drawing.setSelectedShape(currentShape);
                 drawing.setShapeMode(ShapeMode.Select);
+                drawingView.setCurrentShape(null);
                 drawingView.repaint();
             }
             appService.setDrawMode(DrawMode.Idle);
