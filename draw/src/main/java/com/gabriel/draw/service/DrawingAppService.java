@@ -15,7 +15,7 @@ import java.awt.*;
 
 public class DrawingAppService implements AppService {
 
-    final private Drawing drawing;;
+    final private Drawing drawing;
 
     @Setter
     DrawingView drawingView;
@@ -25,6 +25,8 @@ public class DrawingAppService implements AppService {
     ScalerService scalerService;
     SearchService searchService;
     XmlDocumentService xmlDocumentService;
+
+
 
     DocumentService documentService;
     public DrawingAppService(){
@@ -70,7 +72,12 @@ public class DrawingAppService implements AppService {
 
     @Override
     public Color getColor() {
-        return drawing.getColor();
+        Shape selectedShape = drawing.getSelectedShape();
+        if (selectedShape == null) {
+            return drawing.getColor();
+        } else {
+            return selectedShape.getColor();
+        }
     }
 
     @Override
@@ -80,7 +87,6 @@ public class DrawingAppService implements AppService {
         for (Shape shape : shapes) {
             if (shape.isSelected()) {
                 shape.setColor(color);
-                shape.getRendererService().render(drawingView.getGraphics(), shape, false);
                 isEmpty = false;
             }
         }
@@ -91,12 +97,27 @@ public class DrawingAppService implements AppService {
 
     @Override
     public Color getFill(){
-        return drawing.getFill();
+        Shape selectedShape = drawing.getSelectedShape();
+        if (selectedShape == null) {
+            return drawing.getFill();
+        } else {
+            return selectedShape.getFill();
+        }
     }
 
     @Override
     public void setFill(Color color) {
-        drawing.setFill(color);
+        List<Shape> shapes = drawing.getShapes();
+        boolean isEmpty = true;
+        for (Shape shape : shapes) {
+            if (shape.isSelected()) {
+                shape.setFill(color);
+                isEmpty = false;
+            }
+        }
+        if(isEmpty){
+            drawing.setFill(color);
+        }
     }
 
     @Override
@@ -454,10 +475,9 @@ public class DrawingAppService implements AppService {
     @Override
     public void setIsGradient(boolean yes) {
         Shape selectedShape = drawing.getSelectedShape();
-        if(selectedShape==null) {
+        if (selectedShape == null) {
             drawing.setGradient(yes);
-        }
-        else {
+        } else {
             selectedShape.setGradient(yes);
         }
     }
