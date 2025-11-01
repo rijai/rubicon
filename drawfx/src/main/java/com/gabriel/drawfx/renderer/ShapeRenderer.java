@@ -17,7 +17,7 @@ public class ShapeRenderer implements Renderer {
             if (xor) {
                 g.setXORMode(shape.getColor());
             } else {
-                g.setColor(shape.getColor());
+                g.setColor(Color.BLUE);
 
                 g.drawRect(loc.x - r, loc.y - r, 2 * r, 2 * r);
                 g.drawRect(loc.x - r, loc.y + height - r, 2 * r, 2 * r);
