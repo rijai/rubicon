@@ -630,4 +630,9 @@ public class DrawingAppService implements AppService {
             selectedShape.setFont(font);
         }
     }
+
+    @Override
+    public void repaint() {
+        drawingView.repaint();
+    }
 }

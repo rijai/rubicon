@@ -35,12 +35,14 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void undo() {
-        CommandService.undo();;
+        CommandService.undo();
+        appService.repaint();
     }
 
     @Override
     public void redo() {
         CommandService.redo();
+        appService.repaint();
     }
 
     @Override
@@ -60,8 +62,7 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setDrawMode(DrawMode drawMode) {
-        Command command = new SetDrawModeCommand(appService, drawMode);
-        CommandService.ExecuteCommand(command);
+        appService.setDrawMode(drawMode);
     }
 
     @Override
@@ -163,7 +164,7 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void save() {
-        appService.save();;
+        appService.save();
     }
 
     @Override
@@ -364,5 +365,10 @@ public class DrawingCommandAppService implements AppService {
     @Override
     public void setFont(Font font) {
         appService.setFont(font);
+    }
+
+    @Override
+    public void repaint() {
+        appService.repaint();
     }
 }
