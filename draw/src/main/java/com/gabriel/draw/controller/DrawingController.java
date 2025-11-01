@@ -56,7 +56,6 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
             ShapeMode currentShapeMode = appService.getShapeMode();
             if(currentShapeMode == ShapeMode.Select) {
                 appService.search(start, !e.isControlDown());
-
             }
             else {
                 if(currentShape!=null){
@@ -91,11 +90,7 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                         currentShape.setColor(appService.getColor());
                         currentShape.setThickness(appService.getThickness());
                 }
-
-/*                if(currentShape!=null) {
-                    currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, false);
-                }
-  */          }
+            }
             appService.setDrawMode(DrawMode.MousePressed);
         }
     }
@@ -124,7 +119,7 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                 }
             }
             else {
-                currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, true);
+                //currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, true);
                 appService.scale(currentShape, end);
                 currentShape.setText(drawing.getText());
                 currentShape.setFont(drawing.getFont());
@@ -142,6 +137,12 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
             }
             appService.setDrawMode(DrawMode.Idle);
         }
+
+        //fix for property table not updating after deselecting a shape
+        if (propertySheet.isEditing()) {
+            propertySheet.getCellEditor().stopCellEditing();
+        }
+
         propertySheet.populateTable(appService);
         drawingView.repaint();
     }
