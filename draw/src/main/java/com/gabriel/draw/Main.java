@@ -1,5 +1,6 @@
 package com.gabriel.draw;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import com.gabriel.draw.controller.ActionController;
 import com.gabriel.draw.view.*;
 import com.gabriel.draw.service.DrawingCommandAppService;
@@ -16,6 +17,7 @@ import java.awt.event.ActionListener;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
+        FlatLightLaf.setup();
         new DrawingFrame();
     }
 }
