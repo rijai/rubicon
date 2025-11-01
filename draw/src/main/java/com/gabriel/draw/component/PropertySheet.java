@@ -138,7 +138,7 @@ public class PropertySheet extends PropertyPanel {
         BooleanProperty isGradientProp = new BooleanProperty("IsGradient",  appService.isGradient() );
         propertyTable.addProperty(isGradientProp);
 
-        BooleanProperty isVisibleProp = new BooleanProperty("IsVisible",  appService.isGradient() );
+        BooleanProperty isVisibleProp = new BooleanProperty("IsVisible",  appService.isVisible() );
         propertyTable.addProperty(isVisibleProp);
 
         IntegerProperty lineThicknessProp = new IntegerProperty("Line Thickness", appService.getThickness());
