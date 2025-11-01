@@ -12,7 +12,7 @@ public class Normalizer {
         }
         if(shape.getHeight()<0){
             shape.getLocation().y += h;
-            shape.setHeight(-h);;
+            shape.setHeight(-h);
         }
     }
 }

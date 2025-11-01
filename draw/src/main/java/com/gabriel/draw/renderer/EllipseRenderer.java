@@ -22,6 +22,15 @@ public class EllipseRenderer extends ShapeRenderer {
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(shape.getThickness()));
 
+        if(width < 0) {
+            x += width;
+            width = -width;
+        }
+        if(height < 0) {
+            y += height;
+            height = -height;
+        }
+
         if (xor) {
             g2.setXORMode(shape.getColor());
         } else {
@@ -38,6 +47,8 @@ public class EllipseRenderer extends ShapeRenderer {
                 g2.setColor(shape.getColor());
             }
         }
+
+
         g2.drawOval(x, y, width, height);
         super.render(g, shape, xor);
     }

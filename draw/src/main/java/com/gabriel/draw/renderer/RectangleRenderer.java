@@ -18,6 +18,15 @@ public class RectangleRenderer extends ShapeRenderer {
         int width = shape.getWidth() ;
         int height = shape.getHeight();
 
+        if(width < 0) {
+            x += width;
+            width = -width;
+        }
+        if(height < 0) {
+            y += height;
+            height = -height;
+        }
+
         if(xor) {
             g.setXORMode(shape.getColor());
         }
