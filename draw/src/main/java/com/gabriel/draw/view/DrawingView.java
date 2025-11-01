@@ -14,6 +14,8 @@ import java.awt.*;
 public class DrawingView extends JPanel {
 
     AppService appService;
+    @Setter
+    private Shape currentShape;
 
     public DrawingView(AppService appService){
         this.appService  = appService;
@@ -36,6 +38,12 @@ public class DrawingView extends JPanel {
         for(Shape shape : shapes){
             shape.getRendererService().render(g, shape, false);
         }
+
+        if (currentShape != null) {
+            g2d.setStroke(new BasicStroke(currentShape.getThickness()));
+            currentShape.getRendererService().render(g2d, currentShape, false);
+        }
+
     }
 
 

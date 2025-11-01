@@ -114,7 +114,6 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                     } else {
                         appService.scale(selectedShape, start, end);
                         Normalizer.normalize(selectedShape);
-                        drawingView.repaint();
                     }
                 }
             }
@@ -168,23 +167,25 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                         List<Shape> shapes =drawing.getShapes();
                         for(Shape shape : shapes) {
                             if (shape.isSelected()) {
-                                shape.getRendererService().render(drawingView.getGraphics(), shape, true);
+                                //moving preview
                                 appService.move(shape, start, end);
-                                shape.getRendererService().render(drawingView.getGraphics(), shape, true);
+                                drawingView.setCurrentShape(currentShape);
+                                drawingView.repaint();
                             }
                         }
                     }
                     else {
                         appService.scale(selectedShape, start, end);
+                        drawingView.repaint(); //scaling preview
                     }
                 }
                 start = end;
-
             }
             else {
-                currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, true);
+                //shape creation preview
                 appService.scale(currentShape, end);
-                currentShape.getRendererService().render(drawingView.getGraphics(), currentShape, true);
+                drawingView.setCurrentShape(currentShape);
+                drawingView.repaint();
             }
        }
     }
