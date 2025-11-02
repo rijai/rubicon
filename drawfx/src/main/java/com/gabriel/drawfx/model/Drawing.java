@@ -26,7 +26,7 @@ public class Drawing {
     int thickness  = 1;
     private ShapeMode shapeMode = ShapeMode.Rectangle;
     private DrawMode drawMode = DrawMode.Idle;
-    private int SearchRadius = 5;
+    private int SearchRadius = 10;
     private Font font = null;
     int width = 0;
     int height = 0;
