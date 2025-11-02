@@ -8,12 +8,14 @@ public class CommandService {
     public static void ExecuteCommand(Command command) {
         command.execute();
         undoStack.push(command);
+        redoStack.clear();
     }
 
     public static void undo() {
         if (undoStack.empty())
             return;
         Command command = undoStack.pop();
+        System.out.println("Undoing command: " + command.getClass().getSimpleName());
         command.undo();
         redoStack.push(command);
     }
