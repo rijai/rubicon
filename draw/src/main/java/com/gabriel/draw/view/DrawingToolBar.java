@@ -27,7 +27,7 @@ public class DrawingToolBar extends JToolBar {
 
         //Lay out the main panel.
         setPreferredSize(new Dimension(200, 30));
-        setBackground(Color.GREEN);
+
     }
 
     protected void addButtons() {
