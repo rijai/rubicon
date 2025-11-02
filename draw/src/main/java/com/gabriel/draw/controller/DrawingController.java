@@ -15,9 +15,11 @@ import com.gabriel.drawfx.service.AppService;
 import com.gabriel.drawfx.model.Shape;
 import lombok.Setter;
 
+import java.util.HashMap;
 import java.util.List;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Map;
 
 public class DrawingController  implements MouseListener, MouseMotionListener, KeyListener {
     Point start;
@@ -38,6 +40,7 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
     private Shape currentShape = null;
     private Point oldPosition, lastMousePosition;
     int oldWidth, oldHeight;
+    private final Map<Shape, Point> oldMovePositions = new HashMap<>();
 
      public DrawingController(AppService appService, DrawingView drawingView){
        this.appService = appService;
@@ -59,6 +62,25 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
             ShapeMode currentShapeMode = appService.getShapeMode();
             if(currentShapeMode == ShapeMode.Select) {
                 appService.search(start, !e.isControlDown());
+
+                oldMovePositions.clear();
+                Shape mainSelected = appService.getDrawing().getSelectedShape();
+
+                if (mainSelected != null) {
+                    if (mainSelected.getSelectionMode() == SelectionMode.None) {
+                        for (Shape shape : appService.getDrawing().getShapes()) {
+                            if (shape.isSelected()) {
+                                oldMovePositions.put(shape, new Point(shape.getLocation()));
+                            }
+                        }
+                    } else {
+                        //for scaling
+                        oldWidth = mainSelected.getWidth();
+                        oldHeight = mainSelected.getHeight();
+                        oldPosition = new Point(mainSelected.getLocation());
+                    }
+                    lastMousePosition = start;
+                }
             }
             else {
                 if(currentShape!=null){
@@ -98,13 +120,6 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                 }
             }
             appService.setDrawMode(DrawMode.MousePressed);
-            if (appService.getDrawing().getSelectedShape() != null) {
-                oldPosition = new Point(currentShape.getLocation());
-                oldWidth = currentShape.getWidth();
-                oldHeight = currentShape.getHeight();
-                lastMousePosition = start;
-            }
-            System.out.println(oldPosition.x);
         }
     }
 
@@ -118,11 +133,15 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                     if (selectedShape.getSelectionMode() == SelectionMode.None) {
                         List<Shape> shapes = drawing.getShapes();
                         for (Shape shape : shapes) {
-                            if (shape.isSelected() && !shape.getLocation().equals(oldPosition)) {
-                                System.out.println("Moving shape from " + oldPosition + " to " + shape.getLocation());
-                                appService.move(shape, oldPosition, shape.getLocation());
+                            if (oldMovePositions.containsKey(shape)) {
+                                Point oldLoc = oldMovePositions.get(shape);
+
+                                if (oldLoc != null && !shape.getLocation().equals(oldLoc)) {
+                                    appService.move(shape, oldLoc, shape.getLocation());
+                                }
                             }
                         }
+                        oldMovePositions.clear();
                     } else {
                         Point newPosition = selectedShape.getLocation();
                         int newWidth = selectedShape.getWidth();
@@ -186,19 +205,14 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                 Shape selectedShape = drawing.getSelectedShape();
                 if(selectedShape != null){
                     if(selectedShape.getSelectionMode() == SelectionMode.None){
-                        List<Shape> shapes =drawing.getShapes();
-                        for(Shape shape : shapes) {
-                            if (shape.isSelected()) {
-                                Point current = e.getPoint();
-                                int dx = current.x - lastMousePosition.x;
-                                int dy = current.y - lastMousePosition.y;
-                                if (dx != 0 || dy != 0) {
-                                    appService.move(shape.getLocation(), new Point(selectedShape.getLocation().x + dx, selectedShape.getLocation().y + dy) );
-                                    lastMousePosition = current;
-                                    drawingView.repaint();
-                                }
+                        Point current = e.getPoint();
+                        int dx = current.x - lastMousePosition.x;
+                        int dy = current.y - lastMousePosition.y;
 
-                            }
+                        if (dx != 0 || dy != 0) {
+                            appService.move(lastMousePosition, current);
+                            lastMousePosition = current;
+                            drawingView.repaint();
                         }
                     }
                     else {
