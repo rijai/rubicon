@@ -9,6 +9,9 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.net.URL;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import javax.swing.*;
+
 public class DrawingToolBar extends JToolBar {
 
     protected JTextArea textArea;
@@ -23,16 +26,28 @@ public class DrawingToolBar extends JToolBar {
         textArea = new JTextArea(5, 30);
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
-        add(scrollPane, BorderLayout.CENTER);
+        //add(scrollPane, BorderLayout.CENTER);
 
         //Lay out the main panel.
-        setPreferredSize(new Dimension(200, 30));
+        setPreferredSize(new Dimension(200, 40));
 
     }
 
     protected void addButtons() {
         JButton button = null;
-        button = makeNavigationButton("rect", ActionCommand.RECT, "Draw a rectangle",ActionCommand.RECT);
+
+        button = makeNavigationButton("undo", ActionCommand.UNDO, "Undo Action",ActionCommand.UNDO);
+        add(button);
+
+        button = makeNavigationButton("redo", ActionCommand.REDO, "Redo Action",ActionCommand.REDO);
+        add(button);
+
+        addSeparator();
+
+        button = makeNavigationButton("select",ActionCommand.SELECT,"Switch to select",ActionCommand.SELECT);
+        add(button);
+
+        button = makeNavigationButton("rectangle", ActionCommand.RECT, "Draw a rectangle",ActionCommand.RECT);
         add(button);
 
         button = makeNavigationButton("line", ActionCommand.LINE, "Draw a line",ActionCommand.LINE);
@@ -47,8 +62,6 @@ public class DrawingToolBar extends JToolBar {
         button = makeNavigationButton("image",ActionCommand.IMAGE,"Add an  image",ActionCommand.IMAGE);
         add(button);
 
-        button = makeNavigationButton("select",ActionCommand.SELECT,"Switch to select",ActionCommand.SELECT);
-        add(button);
 
         button = makeNavigationButton("imagefile",ActionCommand.IMAGEFILE,"Select another image ",ActionCommand.IMAGEFILE);
         add(button);
@@ -59,45 +72,44 @@ public class DrawingToolBar extends JToolBar {
         //separator
         addSeparator();
 
-        //fourth button
-        button = new JButton("Another button");
-        button.setActionCommand("SOMETHING_ELSE");
-        button.setToolTipText("Something else");
-        button.addActionListener(actionListener);
-        add(button);
-
-        //fifth component is NOT a button!
-        JTextField textField = new JTextField("");
-        textField.setColumns(10);
-        textField.addActionListener(actionListener);
-        textField.setActionCommand("TEXT_ENTERED");
-        add(textField);
+//        //fourth button
+//        button = new JButton("Another button");
+//        button.setActionCommand("SOMETHING_ELSE");
+//        button.setToolTipText("Something else");
+//        button.addActionListener(actionListener);
+//        add(button);
+//
+//        //fifth component is NOT a button!
+//        JTextField textField = new JTextField("");
+//        textField.setColumns(10);
+//        textField.addActionListener(actionListener);
+//        textField.setActionCommand("TEXT_ENTERED");
+//        add(textField);
     }
 
-    protected JButton makeNavigationButton(String imageName,
-        String actionCommand,
-        String toolTipText,
-        String altText) {
-        //Look for the image.
-        String imgLocation = "images/"
-                + imageName
-                + ".png";
+
+
+    protected JButton makeNavigationButton(String imageName, String actionCommand, String toolTipText, String altText) {
+
+        String imgLocation = "images/" + imageName + ".svg";
         URL imageURL = DrawingToolBar.class.getResource(imgLocation);
 
-        //Create and initialize the button.
         JButton button = new JButton();
         button.setActionCommand(actionCommand);
         button.setToolTipText(toolTipText);
         button.addActionListener(actionListener);
 
-        if (imageURL != null) {                      //image found
-            button.setIcon(new ImageIcon(imageURL, altText));
-        } else {                                     //no image found
+        if (imageURL != null) {
+            FlatSVGIcon svgIcon = new FlatSVGIcon(imageURL);
+            svgIcon.derive(50, 50);
+            button.setIcon(svgIcon);
+        } else {
             button.setText(altText);
-            System.err.println("Resource not found: "
-                    + imgLocation);
+            System.err.println("Resource not found: " + imgLocation);
         }
+
         return button;
     }
+
 
 }
