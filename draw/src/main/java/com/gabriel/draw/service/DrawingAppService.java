@@ -121,8 +121,8 @@ public class DrawingAppService implements AppService {
     }
 
     @Override
-    public void move(Shape shape, Point start, Point newLoc) {
-        moverService.move(shape, start, newLoc);
+    public void move (Shape shape, Point oldLoc, Point newLoc) {
+        moverService.move(shape, oldLoc, newLoc);
     }
 
     @Override
@@ -136,13 +136,20 @@ public class DrawingAppService implements AppService {
     }
 
     @Override
-    public void scale(Shape shape, Point start, Point end) {
-        scalerService.scale(shape, start, end);
+    public void scale(Shape shape, Point oldLocation, Point newLocation, int oldWidth, int newWidth, int oldHeight, int newHeight) {
+        shape.setLocation(newLocation);
+        shape.setWidth(newWidth);
+        shape.setHeight(newHeight);
     }
 
     @Override
     public void scale(Shape shape, Point end) {
         scalerService.scale(shape, end);
+    }
+
+    @Override
+    public void scale(Shape shape, Point start, Point end) {
+        scalerService.scale(shape, start, end);
     }
 
     @Override
@@ -503,11 +510,18 @@ public class DrawingAppService implements AppService {
 
     public void delete() {
         List<Shape> shapes = drawing.getShapes();
+        List<Shape> shapesToRemove = new java.util.ArrayList<>();
         for(Shape shape : shapes) {
             if(shape.isSelected()) {
-                delete(shape);
+                shapesToRemove.add(shape);
             }
         }
+
+        for (Shape shape : shapesToRemove) {
+            delete(shape);
+            drawing.setSelectedShape(null);
+        }
+
     }
 
     @Override

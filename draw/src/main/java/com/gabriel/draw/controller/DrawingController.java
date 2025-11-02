@@ -36,6 +36,8 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
     private PropertySheet propertySheet;
 
     private Shape currentShape = null;
+    private Point oldPosition, lastMousePosition;
+    int oldWidth, oldHeight;
 
      public DrawingController(AppService appService, DrawingView drawingView){
        this.appService = appService;
@@ -51,6 +53,7 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
 
     @Override
     public void mousePressed(MouseEvent e) {
+        drawingView.requestFocusInWindow();
         if(appService.getDrawMode() == DrawMode.Idle) {
             start = e.getPoint();
             ShapeMode currentShapeMode = appService.getShapeMode();
@@ -95,6 +98,13 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                 }
             }
             appService.setDrawMode(DrawMode.MousePressed);
+            if (appService.getDrawing().getSelectedShape() != null) {
+                oldPosition = new Point(currentShape.getLocation());
+                oldWidth = currentShape.getWidth();
+                oldHeight = currentShape.getHeight();
+                lastMousePosition = start;
+            }
+            System.out.println(oldPosition.x);
         }
     }
 
@@ -108,15 +118,26 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                     if (selectedShape.getSelectionMode() == SelectionMode.None) {
                         List<Shape> shapes = drawing.getShapes();
                         for (Shape shape : shapes) {
-                            if (shape.isSelected()) {
-                                appService.move(shape, start, end);
+                            if (shape.isSelected() && !shape.getLocation().equals(oldPosition)) {
+                                System.out.println("Moving shape from " + oldPosition + " to " + shape.getLocation());
+                                appService.move(shape, oldPosition, shape.getLocation());
                             }
                         }
                     } else {
-                        appService.scale(selectedShape, start, end);
-//                        if (appService.getShapeMode() != ShapeMode.Line)
-//                            Normalizer.normalize(selectedShape);
+                        Point newPosition = selectedShape.getLocation();
+                        int newWidth = selectedShape.getWidth();
+                        int newHeight = selectedShape.getHeight();
+
+                        appService.scale(
+                                selectedShape,
+                                oldPosition, newPosition,
+                                oldWidth, newWidth,
+                                oldHeight, newHeight
+                        );
+                        if (appService.getShapeMode() != ShapeMode.Line)
+                            Normalizer.normalize(selectedShape);
                     }
+                    lastMousePosition = null;
                 }
             }
             else {
@@ -168,10 +189,15 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                         List<Shape> shapes =drawing.getShapes();
                         for(Shape shape : shapes) {
                             if (shape.isSelected()) {
-                                //moving preview
-                                appService.move(shape, start, end);
-                                drawingView.setCurrentShape(currentShape);
-                                drawingView.repaint();
+                                Point current = e.getPoint();
+                                int dx = current.x - lastMousePosition.x;
+                                int dy = current.y - lastMousePosition.y;
+                                if (dx != 0 || dy != 0) {
+                                    appService.move(shape.getLocation(), new Point(selectedShape.getLocation().x + dx, selectedShape.getLocation().y + dy) );
+                                    lastMousePosition = current;
+                                    drawingView.repaint();
+                                }
+
                             }
                         }
                     }
@@ -203,9 +229,11 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
 
     @Override
     public void keyPressed(KeyEvent e) {
-//        if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-//          appService.delete();
-//        }
+        if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+          appService.delete();
+          propertySheet.populateTable(appService);
+          appService.repaint();
+        }
     }
 
 

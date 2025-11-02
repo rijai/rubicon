@@ -25,12 +25,13 @@ public interface AppService {
     Color getFill();
     void setFill(Color color);
 
-    void move (Shape shape, Point Start, Point newLoc);
-    void move(Point start, Point newLoc) ;
+    void move (Shape shape, Point oldLoc, Point newLoc);
+    void move(Point start, Point newLoc);
 
     void scale(Point start, Point end);
-    void scale(Shape shape, Point start, Point end);
+    void scale(Shape shape, Point oldLocation, Point newLocation, int oldWidth, int newWidth, int oldHeight, int newHeight);
     void scale(Shape shape, Point end);
+    void scale(Shape shape, Point start, Point end);
 
     void create(Shape shape);
     void delete(Shape shape);
