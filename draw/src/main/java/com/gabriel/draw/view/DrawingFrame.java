@@ -36,6 +36,7 @@ public class DrawingFrame extends JFrame {
     DrawingWindowController drawingWindowController;
     public DrawingFrame() {
 
+        setTitle("Rubicon");
         drawing = new Drawing();
         drawingAppService = new DrawingAppService();
         appService = DrawingCommandAppService.getInstance(drawingAppService);
@@ -64,6 +65,8 @@ public class DrawingFrame extends JFrame {
 
         drawingView.addMouseMotionListener(drawingController);
         drawingView.addMouseListener(drawingController);
+        drawingView.addKeyListener(drawingController);
+        drawingView.setFocusable(true);
         drawingView.setPreferredSize(new Dimension(4095, 8192));
 
         jScrollPane = new JScrollPane(drawingView);
