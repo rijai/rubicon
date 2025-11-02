@@ -92,6 +92,7 @@ public class DrawingFrame extends JFrame {
         this.addWindowStateListener(drawingWindowController);
         buildGUI(pane);
         drawingController.setPropertySheet(propertySheet);
+        actionListener.setPropertySheet(propertySheet);
     }
 
     public void buildGUI(Container pane){
