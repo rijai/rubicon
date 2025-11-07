@@ -1,6 +1,8 @@
 package com.gabriel.draw.controller;
+import com.gabriel.draw.component.PropertySheet;
 import com.gabriel.draw.service.ImageFileService;
 import com.gabriel.draw.service.XmlDocumentService;
+import com.gabriel.draw.view.DrawingToolBar;
 import com.gabriel.drawfx.ActionCommand;
 import com.gabriel.drawfx.ShapeMode;
 import com.gabriel.drawfx.model.Drawing;
@@ -15,11 +17,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import com.gabriel.drawfx.command.CommandService;
+
 
 public class ActionController implements ActionListener {
     AppService appService;
     ImageFileService imageFileService;
 
+
+
+    @Setter
+    private PropertySheet propertySheet;
     @Setter
     Component component;
 
@@ -28,20 +36,25 @@ public class ActionController implements ActionListener {
     @Setter
     JFrame frame;
 
+
     public  ActionController(AppService appService){
         this.appService = appService;
         drawing = appService.getDrawing();
         imageFileService = new ImageFileService();
    }
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
+        DrawingToolBar toolBar = DrawingToolBar.getInstance();
         String cmd = e.getActionCommand();
         if (ActionCommand.UNDO.equals(cmd)) {
             appService.undo();
+            //toolBar.updateUndoRedoButtons(appService.canUndo(), appService.canRedo());
         }
         if (ActionCommand.REDO.equals(cmd)) {
             appService.redo();
+            //toolBar.updateUndoRedoButtons(appService.canUndo(), appService.canRedo());
         } else if (ActionCommand.LINE.equals(cmd)) {
             appService.setShapeMode(ShapeMode.Line);
         } else if (ActionCommand.RECT.equals(cmd)) {
@@ -147,20 +160,25 @@ public class ActionController implements ActionListener {
             XmlDocumentService docService = new XmlDocumentService(drawing);
             docService.save();
 
-            // TODO Insert the handler for the File menuitems.
-
         }
+        if (propertySheet.isEditing()) {
+            propertySheet.getCellEditor().stopCellEditing();
+        }
+
+        propertySheet.populateTable(appService);
+        appService.repaint();
     }
     void getFont() {
         FontDialog dialog = new FontDialog((Frame) null, "Font Dialog Example", true);
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         dialog.setFont(drawing.getFont());
+
         dialog.setPreviewText(drawing.getText());
         dialog.setVisible(true);
         if (!dialog.isCancelSelected()) {
             Font font = dialog.getSelectedFont();
-            drawing.setFont(dialog.getSelectedFont());
             drawing.setText(dialog.getPreviewText());
+            appService.setFont(font);
             System.out.println("Selected font is: " + dialog);
         }
         dialog.setVisible(false);

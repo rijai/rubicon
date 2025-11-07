@@ -156,16 +156,10 @@ public class PropertySheet extends PropertyPanel {
         IntegerProperty height = new IntegerProperty("Height", appService.getHeight());
         propertyTable.addProperty(height);
 
-        BooleanProperty prop3 = new BooleanProperty("Boolean", true);
-        propertyTable.addProperty(prop3);
-
         if(shape!=null) {
             BooleanProperty selectedProp = new BooleanProperty("is Selected", shape.isSelected());
             propertyTable.addProperty(selectedProp);
         }
-
-        FloatProperty prop4 = new FloatProperty("Float", 1.2f);
-        propertyTable.addProperty(prop4);
 
         StringProperty stringProp = new StringProperty("Text", appService.getText());
         propertyTable.addProperty(stringProp);
@@ -183,11 +177,6 @@ public class PropertySheet extends PropertyPanel {
 
         intProp = new IntegerProperty("Font size", font.getSize());
         propertyTable.addProperty(intProp);
-
-        StringProperty prop6 = new StringProperty("String 2", "test", new StringValidator(
-                new String[]{"test", "test 2", "foo"}
-        ));
-        propertyTable.addProperty(prop6);
 
         DoubleProperty prop8 = new DoubleProperty("Double", 2.34,
                 new CompoundValidator(

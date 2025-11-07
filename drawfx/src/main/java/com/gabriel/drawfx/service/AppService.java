@@ -102,4 +102,7 @@ public interface AppService {
     void setFont(Font font);
 
     void repaint();
+
+    boolean canRedo();
+    boolean canUndo();
 }

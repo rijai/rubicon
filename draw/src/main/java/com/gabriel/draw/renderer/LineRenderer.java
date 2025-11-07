@@ -14,10 +14,10 @@ public class LineRenderer extends ShapeRenderer {
             return;
         }
 
-        int x = shape.getLocation().x;
-        int y = shape.getLocation().y;
-        int width = shape.getWidth() ;
-        int height = shape.getHeight();
+        int x1 = shape.getLocation().x;
+        int y1 = shape.getLocation().y;
+        int x2 = x1 + shape.getWidth();
+        int y2 = y1 + shape.getHeight();
 
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(shape.getThickness()));
@@ -27,8 +27,11 @@ public class LineRenderer extends ShapeRenderer {
         }
         else {
             g2.setColor(shape.getColor());
-            g2.drawLine(x,y,x+width, y+height);
-            super.render(g, shape, xor);
         }
+
+        g2.drawLine(x1, y1, x2, y2);
+        super.render(g, shape, xor);
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.gabriel.draw.view;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import com.gabriel.draw.component.PropertySheet;
 import com.gabriel.draw.controller.ActionController;
 import com.gabriel.draw.controller.DrawingController;
@@ -35,7 +36,6 @@ public class DrawingFrame extends JFrame {
     DrawingStatusPanel drawingStatusPanel;
     DrawingWindowController drawingWindowController;
     public DrawingFrame() {
-
         setTitle("Rubicon");
         drawing = new Drawing();
         drawingAppService = new DrawingAppService();
@@ -58,7 +58,6 @@ public class DrawingFrame extends JFrame {
 
         drawingView = new DrawingView(appService);
         actionListener.setComponent(drawingView);
-
 
         drawingController = new DrawingController(appService, drawingView);
         drawingController.setDrawingView(drawingView);
@@ -120,69 +119,153 @@ public class DrawingFrame extends JFrame {
     class EventListener extends PropertyEventAdapter {
         @Override
         public void onPropertyUpdated(Property property) {
-            Shape shape  = appService.getSelectedShape();
-            if(property.getName().equals("Current Shape")){
-                if(shape ==null) {
+            Shape shape = appService.getSelectedShape();
+            if (property.getName().equals("Current Shape")) {
+                if (shape == null) {
                     appService.setShapeMode((ShapeMode) property.getValue());
                 }
+                return;
             }
-            if(property.getName().equals("Fore color")){
-                if(shape ==null) {
+
+            if (property.getName().equals("Fore color")) {
+                if (shape == null) {
                     appService.setColor((Color) property.getValue());
                 } else {
-                    shape.setColor((Color) property.getValue());
+                    appService.setColor((Color) property.getValue());
                 }
             }
-            if(property.getName().equals("Fill color")){
-                if(shape ==null) {
-                    appService.setFill((Color)property.getValue());
+            if (property.getName().equals("Fill color")) {
+                if (shape == null) {
+                    appService.setFill((Color) property.getValue());
                 } else {
-                    shape.setFill((Color) property.getValue());
+                    appService.setFill((Color) property.getValue());
                 }
             }
-            if(property.getName().equals("Line Thickness")){
-                if(shape ==null) {
-                    appService.setThickness((int)property.getValue());
+            if (property.getName().equals("Line Thickness")) {
+                if (shape == null) {
+                    appService.setThickness((int) property.getValue());
                 } else {
-                    shape.setThickness((int) property.getValue());
+                    appService.setThickness((int) property.getValue());
                 }
             }
-            if(property.getName().equals("X Location")){
-                if(shape ==null) {
-                    ;
+            if (property.getName().equals("X Location")) {
+                if (shape == null) {
+                    appService.setXLocation((int) property.getValue());
                 } else {
-                    Point p = shape.getLocation();
-                    p.x = (int) property.getValue();
-                    shape.setLocation(p);
+                    appService.setXLocation((int) property.getValue());
                 }
             }
-            if(property.getName().equals("Y Location")){
-                if(shape ==null) {
-                    ;
+            if (property.getName().equals("Y Location")) {
+                if (shape == null) {
+                    appService.setYLocation((int) property.getValue());
                 } else {
-                    Point p = shape.getLocation();
-                    p.y = (int) property.getValue();
-                    shape.setLocation(p);
+                    appService.setYLocation((int) property.getValue());
                 }
             }
-            if(property.getName().equals("Width")){
-                if(shape ==null) {
-                    ;
+            if (property.getName().equals("Width")) {
+                if (shape == null) {
+                    appService.setWidth((int) property.getValue());
                 } else {
-                    int width = shape.getWidth();
-                    shape.setWidth(width);
+                    appService.setWidth((int) property.getValue());
                 }
             }
-            if(property.getName().equals("Height")){
-                if(shape ==null) {
-                    ;
+            if (property.getName().equals("Height")) {
+                if (shape == null) {
+                    appService.setHeight((int) property.getValue());
                 } else {
-                    int height = (int) property.getValue();
-                    shape.setHeight(height);
+                    appService.setHeight((int) property.getValue());
+                }
+            }
+            if (property.getName().equals("Text")) {
+                if (shape == null) {
+                    appService.setText((String) property.getValue());
+                } else {
+                    appService.setText((String) property.getValue());
+                }
+            }
+            if (property.getName().equals("Start color")) {
+                if (shape == null) {
+                    appService.setStartColor((Color) property.getValue());
+                } else {
+                    appService.setStartColor((Color) property.getValue());
+                }
+            }
+            if (property.getName().equals("End color")) {
+                if (shape == null) {
+                    appService.setEndColor((Color) property.getValue());
+                } else {
+                    appService.setEndColor((Color) property.getValue());
+                }
+            }
+            if (property.getName().equals("IsGradient")) {
+                if (shape == null) {
+                    appService.setIsGradient((Boolean) property.getValue());
+                } else {
+                    appService.setIsGradient((Boolean) property.getValue());
+                }
+            }
+            if (property.getName().equals("IsVisible")) {
+                if (shape == null) {
+                    appService.setIsVisible((Boolean) property.getValue());
+                } else {
+                    appService.setIsVisible((Boolean) property.getValue());
+                }
+            }
+            if (property.getName().equals("Start x")) {
+                if (shape == null) {
+                    appService.setStartX((int) property.getValue());
+                } else {
+                    appService.setStartX((int) property.getValue());
+                }
+            }
+            if (property.getName().equals("Start y")) {
+                if (shape == null) {
+                    appService.setStarty((int) property.getValue());
+                } else {
+                    appService.setStarty((int) property.getValue());
+                }
+            }
+            if (property.getName().equals("End x")) {
+                if (shape == null) {
+                    appService.setEndx((int) property.getValue());
+                } else {
+                    appService.setEndx((int) property.getValue());
+                }
+            }
+            if (property.getName().equals("End y")) {
+                if (shape == null) {
+                    appService.setEndy((int) property.getValue());
+                } else {
+                    appService.setEndy((int) property.getValue());
                 }
             }
 
-            drawingView.repaint();
+            // --- Font Logic (Consolidated) ---
+            // The appService.getFont() / setFont() handles whether a shape is selected or not
+
+            if (property.getName().equals("Font family")) {
+                Font font = appService.getFont();
+                if (font != null) {
+                    Font newFont = new Font((String) property.getValue(), font.getStyle(), font.getSize());
+                    appService.setFont(newFont);
+                }
+            }
+            if (property.getName().equals("Font style")) {
+                Font font = appService.getFont();
+                if (font != null) {
+                    Font newFont = new Font(font.getFamily(), (int) property.getValue(), font.getSize());
+                    appService.setFont(newFont);
+                }
+            }
+            if (property.getName().equals("Font size")) {
+                Font font = appService.getFont();
+                if (font != null) {
+                    Font newFont = new Font(font.getFamily(), font.getStyle(), (int) property.getValue());
+                    appService.setFont(newFont);
+                }
+            }
+
+            appService.repaint();
         }
     }
 }

@@ -10,12 +10,19 @@ import java.awt.event.ActionListener;
 import java.net.URL;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import lombok.Getter;
+
 import javax.swing.*;
 
 public class DrawingToolBar extends JToolBar {
 
     protected JTextArea textArea;
     ActionListener actionListener;
+    private static DrawingToolBar instance;
+
+    JButton button;
+    @Getter
+    public JButton undoButton, redoButton;
 
   public DrawingToolBar( ActionListener actionListener){
         setFloatable(false);
@@ -34,14 +41,13 @@ public class DrawingToolBar extends JToolBar {
     }
 
     protected void addButtons() {
-        JButton button = null;
+        undoButton = makeNavigationButton("undo", ActionCommand.UNDO, "Undo Action",ActionCommand.UNDO);
+        add(undoButton);
 
-        button = makeNavigationButton("undo", ActionCommand.UNDO, "Undo Action",ActionCommand.UNDO);
-        add(button);
-
-        button = makeNavigationButton("redo", ActionCommand.REDO, "Redo Action",ActionCommand.REDO);
-        add(button);
-
+        redoButton = makeNavigationButton("redo", ActionCommand.REDO, "Redo Action",ActionCommand.REDO);
+        add(redoButton);
+        //undoButton.setEnabled(false);
+        //redoButton.setEnabled(false);
         addSeparator();
 
         button = makeNavigationButton("select",ActionCommand.SELECT,"Switch to select",ActionCommand.SELECT);
@@ -87,6 +93,14 @@ public class DrawingToolBar extends JToolBar {
 //        add(textField);
     }
 
+    public void updateUndoRedoButtons(boolean canUndo, boolean canRedo) {
+        undoButton.setEnabled(canUndo);
+        redoButton.setEnabled(canRedo);
+    }
+
+    public static DrawingToolBar getInstance() {
+        return instance;
+    }
 
 
     protected JButton makeNavigationButton(String imageName, String actionCommand, String toolTipText, String altText) {

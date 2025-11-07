@@ -9,5 +9,7 @@ public enum SelectionMode {
     MiddleBottom,
     MiddleLeft,
     MiddleRight,
-    None
+    None,
+    StartHandle,
+    EndHandle
 }

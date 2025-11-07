@@ -16,17 +16,46 @@ public final class  ScalerService {
         }
     }
 
+    void scale(Shape shape, Point oldLocation, Point newLocation, int oldWidth, int newWidth, int oldHeight, int newHeight){
+        shape.setLocation(newLocation);
+        shape.setWidth(newWidth);
+        shape.setHeight(newHeight);
+    }
+
     public void scale(Shape shape, Point newEnd){
         int dx = newEnd.x-shape.getLocation().x;
         int dy = newEnd.y - shape.getLocation().y;
         shape.setWidth(dx);
         shape.setHeight(dy);
     }
+
     public void scale(Shape shape, Point start, Point end){
         int dx = end.x - start.x;
         int dy = end.y - start.y;
         int height = shape.getHeight();
         int width = shape.getWidth();
+        int originalHeight = shape.getHeight();
+
+
+
+
+//            if (shape.getSelectionMode() == SelectionMode.StartHandle) {
+//                // Dragging the START point:
+//                // 1. Edit the location
+//                shape.getLocation().x += dx;
+//                shape.getLocation().y += dy;
+//                // 2. Adjust width/height so the end point stays put
+//                shape.setWidth(width - dx);
+//                shape.setHeight(height - dy);
+//
+//            } else if (shape.getSelectionMode() == SelectionMode.EndHandle) {
+//                // Dragging the END point:
+//                // 1. Only edit width/height, leaving location alone
+//                shape.setWidth(width + dx);
+//                shape.setHeight(height + dy);
+//            }
+
+
         if(shape.getSelectionMode() == SelectionMode.UpperLeft) {
             shape.getLocation().x += dx;
             shape.getLocation().y += dy;
@@ -53,6 +82,21 @@ public final class  ScalerService {
             shape.getLocation().y += dy;
         } else if(shape.getSelectionMode() == SelectionMode.MiddleBottom){
             shape.setHeight(height + dy);
+        }
+
+        if (shape.getText() != null && shape.getFont() != null) {
+            int newHeight = shape.getHeight();
+            double scaleFactor = (double) newHeight / originalHeight;
+
+            if (originalHeight > 0) {
+                Font oldFont = shape.getFont();
+                int oldSize = oldFont.getSize();
+
+                int newSize = (int) (oldSize * scaleFactor);
+
+                Font newFont = new Font(oldFont.getFamily(), oldFont.getStyle(), newSize);
+                shape.setFont(newFont);
+            }
         }
     }
 }

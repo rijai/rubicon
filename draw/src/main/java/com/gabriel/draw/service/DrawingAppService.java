@@ -88,10 +88,12 @@ public class DrawingAppService implements AppService {
             if (shape.isSelected()) {
                 shape.setColor(color);
                 isEmpty = false;
+                System.out.println("Set color of selected shape to " + color);
             }
         }
         if(isEmpty){
             drawing.setColor(color);
+            System.out.println("Set default drawing color to " + color);
         }
     }
 
@@ -509,19 +511,7 @@ public class DrawingAppService implements AppService {
     }
 
     public void delete() {
-        List<Shape> shapes = drawing.getShapes();
-        List<Shape> shapesToRemove = new java.util.ArrayList<>();
-        for(Shape shape : shapes) {
-            if(shape.isSelected()) {
-                shapesToRemove.add(shape);
-            }
-        }
-
-        for (Shape shape : shapesToRemove) {
-            delete(shape);
-            drawing.setSelectedShape(null);
-        }
-
+        drawing.getShapes().remove(drawing.getSelectedShape());
     }
 
     @Override
@@ -648,5 +638,17 @@ public class DrawingAppService implements AppService {
     @Override
     public void repaint() {
         drawingView.repaint();
+    }
+
+
+
+    @Override
+    public boolean canUndo() {
+        return false;
+    }
+
+    @Override
+    public boolean canRedo() {
+        return false;
     }
 }

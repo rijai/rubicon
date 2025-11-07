@@ -5,6 +5,7 @@ import com.gabriel.draw.model.*;
 import com.gabriel.draw.model.Image;
 import com.gabriel.draw.model.Rectangle;
 import com.gabriel.draw.view.DrawingStatusPanel;
+import com.gabriel.draw.view.DrawingToolBar;
 import com.gabriel.drawfx.DrawMode;
 import com.gabriel.drawfx.model.Drawing;
 import com.gabriel.drawfx.util.Normalizer;
@@ -41,6 +42,7 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
     private Point oldPosition, lastMousePosition;
     int oldWidth, oldHeight;
     private final Map<Shape, Point> oldMovePositions = new HashMap<>();
+    DrawingToolBar toolBar = DrawingToolBar.getInstance();
 
      public DrawingController(AppService appService, DrawingView drawingView){
        this.appService = appService;
@@ -153,8 +155,8 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                                 oldWidth, newWidth,
                                 oldHeight, newHeight
                         );
-                        if (appService.getShapeMode() != ShapeMode.Line)
-                            Normalizer.normalize(selectedShape);
+                        if (!(selectedShape instanceof Line))
+                            Normalizer.normalize(currentShape);
                     }
                     lastMousePosition = null;
                 }
@@ -167,12 +169,14 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
                 currentShape.setFill(drawing.getFill());
                 currentShape.setStartColor(drawing.getStartColor());
                 currentShape.setEndColor(drawing.getEndColor());
-                Normalizer.normalize(currentShape);
+                if (!(currentShape instanceof Line))
+                    Normalizer.normalize(currentShape);
                 appService.create(currentShape);
                 currentShape.setSelected(true);
                 drawing.setSelectedShape(currentShape);
                 drawing.setShapeMode(ShapeMode.Select);
                 drawingView.setCurrentShape(null);
+                //toolBar.updateUndoRedoButtons(appService.canUndo(), appService.canRedo());
                 drawingView.repaint();
             }
             appService.setDrawMode(DrawMode.Idle);
@@ -201,6 +205,7 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
     public void mouseDragged(MouseEvent e) {
         if(appService.getDrawMode() == DrawMode.MousePressed) {
             end = e.getPoint();
+            drawingStatusPanel.setPoint(e.getPoint());
             if(drawing.getShapeMode() == ShapeMode.Select){
                 Shape selectedShape = drawing.getSelectedShape();
                 if(selectedShape != null){
@@ -256,3 +261,5 @@ public class DrawingController  implements MouseListener, MouseMotionListener, K
 
     }
 }
+
+

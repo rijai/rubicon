@@ -1,9 +1,12 @@
 package com.gabriel.draw.view;
 
+import com.gabriel.draw.service.XmlDocumentService;
 import com.gabriel.draw.util.ImageLoader;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -14,28 +17,22 @@ import java.io.IOException;
 
 public class Splash extends JPanel implements MouseListener {
     private BufferedImage image;
-    private GPanel gPanel;
+    private JButton btn;
     ImageLoader imageLoader;
-    int width;
-    int height;
+
     public Splash() {
         try {
             imageLoader = new ImageLoader();
-            image = imageLoader.loadImage("/nette1440_800.png");
-//            image = ImageIO.read(new File("src\\main\\resources\\nette1440_800.png"));
-            height = image.getHeight();
-            width = image.getWidth();
-
+            image = imageLoader.loadImage("");
         } catch (IOException ex) {
             // handle exception...
         }
-        setSize(width, height);
         setLayout(null);
+        btn = new JButton("Start Drawing");
+        btn.setBounds(950,400,150,50);
+        btn.addMouseListener(this);
+        this.add(btn);
 
-        gPanel = new GPanel("GoDraw");
-        gPanel.setBounds(1100,700,150,50);
-        gPanel.addMouseListener(this);
-        this.add(gPanel);
     }
     @Override
     public void paintComponent(Graphics g) {
@@ -54,7 +51,7 @@ public class Splash extends JPanel implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(e.getSource()==gPanel){
+        if(e.getSource()==btn){
             JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 
             DrawingFrame mf = new DrawingFrame();

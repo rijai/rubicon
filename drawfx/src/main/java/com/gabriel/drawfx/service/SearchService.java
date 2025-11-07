@@ -1,3 +1,4 @@
+// rubicon/drawfx/src/main/java/com/gabriel/drawfx/service/SearchService.java
 package com.gabriel.drawfx.service;
 
 import com.gabriel.drawfx.SelectionMode;
@@ -5,13 +6,8 @@ import com.gabriel.drawfx.model.Drawing;
 import com.gabriel.drawfx.model.Shape;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 public final class SearchService {
-
-    public Shape getSelectedShape(Drawing drawing){
-        return drawing.getSelectedShape();
-    }
 
     public void search(AppService appService, Point p) {
         search(appService, p,true);
@@ -23,11 +19,23 @@ public final class SearchService {
         List<Shape> shapes = drawing.getShapes();
         int r = appService.getSearchRadius();
 
-        for (Shape shape : shapes) {
+        for (int i = shapes.size() - 1; i >= 0; i--) {
+            Shape shape = shapes.get(i);
             Point loc = shape.getLocation();
             int width = shape.getWidth();
             int height = shape.getHeight();
-            if (p.x > loc.x - r && p.x < loc.x + width + r && p.y > loc.y - r && p.y < loc.y + height + r) {
+
+            int x1 = loc.x;
+            int y1 = loc.y;
+            int x2 = x1 + width;
+            int y2 = y1 + height;
+
+            int left = Math.min(x1, x2) - r;
+            int right = Math.max(x1, x2) + r;
+            int top = Math.min(y1, y2) - r;
+            int bottom = Math.max(y1, y2) + r;
+
+            if (p.x >= left && p.x <= right && p.y >= top && p.y <= bottom) {
                 if (found(shape, p, loc.x, loc.y, r)) {
                     shape.setSelectionMode(SelectionMode.UpperLeft);
                 } else if (found(shape, p, loc.x, loc.y + height / 2, r)) {
@@ -47,10 +55,21 @@ public final class SearchService {
                 } else {
                     shape.setSelectionMode(SelectionMode.None);
                 }
+
                 shape.setSelected(true);
                 drawing.setSelectedShape( shape);
-            }
-            else {
+
+                if (single) {
+                    for (int j = 0; j < shapes.size(); j++) {
+                        if (i != j) {
+                            shapes.get(j).setSelected(false);
+                            shapes.get(j).setSelectionMode(SelectionMode.None);
+                        }
+                    }
+                    return;
+                }
+
+            } else {
                 if (single) {
                     if(shape.isSelected()) {
                         shape.setSelected(false);

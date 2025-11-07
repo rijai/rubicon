@@ -1,7 +1,6 @@
 package com.gabriel.draw.service;
 
-import com.gabriel.draw.command.AddShapeCommand;
-import com.gabriel.draw.command.SetDrawModeCommand;
+import com.gabriel.draw.command.*;
 import com.gabriel.drawfx.DrawMode;
 import com.gabriel.drawfx.ShapeMode;
 import com.gabriel.drawfx.command.Command;
@@ -72,7 +71,8 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setColor(Color color) {
-        appService.setColor(color);
+        Command command = new SetColorCommand(appService, color);
+        CommandService.ExecuteCommand(command);
     }
 
     @Override
@@ -82,12 +82,14 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setFill(Color color) {
-        appService.setFill(color);
+        Command command = new SetFillCommand(appService, color);
+        CommandService.ExecuteCommand(command);
     }
 
     @Override
-    public void move(Shape shape, Point start, Point end) {
-        appService.move(shape,start, end);
+    public void move (Shape shape, Point oldLoc, Point newLoc) {
+        Command command = new MoveShapeCommand(appService, shape, oldLoc, newLoc);
+        CommandService.ExecuteCommand(command);
     }
 
     @Override
@@ -101,13 +103,19 @@ public class DrawingCommandAppService implements AppService {
     }
 
     @Override
-    public void scale(Shape shape, Point start, Point end) {
-        appService.scale(shape, start, end);
+    public void scale(Shape shape, Point oldLocation, Point newLocation, int oldWidth, int newWidth, int oldHeight, int newHeight) {
+        Command command = new ScaleShapeCommand(appService, shape, oldLocation, newLocation, oldWidth, newWidth, oldHeight, newHeight);
+        CommandService.ExecuteCommand(command);
     }
 
     @Override
     public void scale(Shape shape, Point end) {
         appService.scale(shape,end);
+    }
+
+    @Override
+    public void scale(Shape shape, Point start, Point end) {
+        appService.scale(shape,start, end);
     }
 
     @Override
@@ -199,7 +207,9 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setThickness(int thickness) {
-        appService.setThickness(thickness);
+        // Use command so thickness changes are undoable and support multi-select
+        Command command = new SetThicknessCommand(appService, thickness);
+        CommandService.ExecuteCommand(command);
     }
 
     @Override
@@ -209,7 +219,15 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setXLocation(int xLocation) {
-        appService.setXLocation(xLocation);
+        Shape shape = appService.getSelectedShape();
+        if (shape != null) {
+
+            Point oldLoc = shape.getLocation();
+            Point newLoc = new Point(xLocation, oldLoc.y);
+
+            Command command = new MoveShapeCommand(appService, shape, oldLoc, newLoc);
+            CommandService.ExecuteCommand(command);
+        }
     }
 
     @Override
@@ -219,7 +237,15 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setYLocation(int yLocation) {
-        appService.setYLocation(yLocation);
+        Shape shape = appService.getSelectedShape();
+        if (shape != null) {
+
+            Point oldLoc = shape.getLocation();
+            Point newLoc = new Point(oldLoc.x, yLocation);
+
+            Command command = new MoveShapeCommand(appService, shape, oldLoc, newLoc);
+            CommandService.ExecuteCommand(command);
+        }
     }
 
     @Override
@@ -229,7 +255,29 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setWidth(int width) {
-        appService.setWidth(width);
+        Shape shape = appService.getSelectedShape();
+        if (shape != null) {
+            Point oldLocation = new Point(shape.getLocation());
+            int oldWidth = shape.getWidth();
+            int oldHeight = shape.getHeight();
+
+            Point newLocation = new Point(oldLocation);
+            int newWidth = width;
+            int newHeight = oldHeight; //Do not change the width
+
+
+            Command command = new ScaleShapeCommand(
+                    appService,
+                    shape,
+                    oldLocation,
+                    newLocation,
+                    oldWidth,
+                    newWidth,
+                    oldHeight,
+                    newHeight
+            );
+            CommandService.ExecuteCommand(command);
+        }
     }
 
     @Override
@@ -239,7 +287,29 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setHeight(int height) {
-        appService.setHeight(height);
+        Shape shape = appService.getSelectedShape();
+        if (shape != null) {
+            Point oldLocation = new Point(shape.getLocation());
+            int oldWidth = shape.getWidth();
+            int oldHeight = shape.getHeight();
+
+
+            Point newLocation = new Point(oldLocation);
+            int newWidth = oldWidth; //Do not change the width
+            int newHeight = height;
+
+            Command command = new ScaleShapeCommand(
+                    appService,
+                    shape,
+                    oldLocation,
+                    newLocation,
+                    oldWidth,
+                    newWidth,
+                    oldHeight,
+                    newHeight
+            );
+            CommandService.ExecuteCommand(command);
+        }
     }
 
     @Override
@@ -259,12 +329,14 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setText(String text) {
-        appService.setText(text);
+        Command command = new SetTextCommand(appService, text);
+        CommandService.ExecuteCommand(command);
     }
 
     @Override
     public void setFontSize(int fontSize) {
-        appService.setFontSize(fontSize);
+        Command command = new SetFontSizeCommand(appService, fontSize);
+        CommandService.ExecuteCommand(command);
     }
 
     @Override
@@ -294,7 +366,8 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setIsGradient(boolean yes) {
-        appService.setIsGradient(yes);
+        Command command = new SetIsGradientCommand(appService, yes);
+        CommandService.ExecuteCommand(command);
     }
 
     @Override
@@ -304,17 +377,24 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setIsVisible(boolean yes) {
-        appService.setIsVisible(yes);
+        Command command = new SetIsVisible(appService, yes);
+        CommandService.ExecuteCommand(command);
     }
 
     @Override
     public void delete() {
-        appService.delete();
+        List<Shape> selectedShapes = appService.getSelectedShapes();
+        if (selectedShapes == null || selectedShapes.isEmpty()) {
+            return;
+        }
+        Command command = new DeleteShapeCommand(appService, selectedShapes);
+        CommandService.ExecuteCommand(command);
     }
 
     @Override
     public void setStartX(int startx) {
-        appService.setStartX(startx);
+        Command command = new SetStartXCommand(appService, startx);
+        CommandService.ExecuteCommand(command);
     }
 
     @Override
@@ -324,7 +404,8 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setStarty(int starty) {
-        appService.setStarty(starty);
+        Command command = new SetStartYCommand(appService, starty);
+        CommandService.ExecuteCommand(command);
     }
 
     @Override
@@ -334,7 +415,8 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setEndx(int endx) {
-        appService.setEndx(endx);
+        Command command = new SetEndXCommand(appService, endx);
+        CommandService.ExecuteCommand(command);
     }
 
     @Override
@@ -344,7 +426,8 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setEndy(int endy) {
-        appService.setEndy(endy);
+        Command command = new SetEndYCommand(appService, endy);
+        CommandService.ExecuteCommand(command);
     }
 
     @Override
@@ -364,11 +447,21 @@ public class DrawingCommandAppService implements AppService {
 
     @Override
     public void setFont(Font font) {
-        appService.setFont(font);
+        Command command = new SetFontCommand(appService, font);
+        CommandService.ExecuteCommand(command);
     }
 
     @Override
     public void repaint() {
         appService.repaint();
+    }
+    @Override
+    public boolean canUndo() {
+        return CommandService.canUndo();
+    }
+
+    @Override
+    public boolean canRedo() {
+        return CommandService.canRedo();
     }
 }
